@@ -1,0 +1,79 @@
+
+<html>
+  <head>
+    <title>$Title$</title>
+      <script type="text/javascript" src="js/jquery-2.2.4.min.js"></script>
+  </head>
+  <body>
+  <form method="post" action="javascript:;" name="file_form">
+      <input type="file" name="upfile">
+      <input type="hidden" name="fname" value="upfile">
+    <button onclick="upfile_fun()">提交</button>
+
+  </form>
+  <a href="javascript:sb()">提交</a>
+  <script type="text/javascript">
+      function sb() {
+          $.ajax({
+              async: true,
+              url: "/test",
+              type: 'post',
+              data: "a=1&b=2&c=3",
+              //jsonp: 'callback',
+              dataType: 'json',
+
+
+              beforeSend: function (request) {
+                  //request.setRequestHeader("key", 'var');
+              },
+              success: function (json) {
+                  console.log(json);
+              },
+              complete: function (XMLHttpRequest, textStatus) {
+                  console.log(textStatus);
+              },
+              error: function (xhr) {
+                  console.log(xhr);
+              }
+          });
+
+
+      }
+      function upfile_fun() {
+          var data = new FormData($("form[name=file_form]")[0]);
+          console.log(data);
+          for (var value of data.values()) {
+              console.log(value);
+          }
+          postfileapi("/api/aaa/upfile",data,function () {
+              console.log("success");
+          });
+      }
+
+      function postfileapi(cmd, data, func) {
+
+          var apiurl = "/api/aaa/upfile";
+          data.append('cmd',cmd);
+          console.log(data);
+          $.ajax({
+              async: true,
+              url: apiurl,
+              type: 'post',
+              dataType: 'json',
+              data: data,
+              //jsonp: 'callback',
+              cache: false,
+              contentType: false,
+              processData: false,
+              beforeSend: function(request) {
+                  //request.setRequestHeader("key", 'var');
+              },
+              success: function(json) {
+                  func(json);
+              },
+              complete: function(XMLHttpRequest, textStatus) {},
+              error: function(xhr) {console.log(xhr);}
+          });
+      }
+  </script></body>
+</html>
