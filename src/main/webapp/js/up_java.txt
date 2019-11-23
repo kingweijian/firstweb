@@ -1,0 +1,42 @@
+  public void test(HttpServletRequest httpServletRequest) throws IOException {
+        String contentType=httpServletRequest.getContentType();
+        int start=contentType.indexOf("boundary=");
+        int boundaryLen=new String("boundary=").length(),blength = 0;
+        int contentLength = httpServletRequest.getContentLength();
+
+        String boundary=contentType.substring(start+boundaryLen);
+        boundary="--"+boundary;
+        blength = get_Bytelen(boundary);
+        System.out.println(boundary);
+        byte buffer[] = new byte[contentLength];
+        int once = 0;
+        int total = 0;
+        DataInputStream dataInputStream = new DataInputStream(httpServletRequest.getInputStream());
+        while ((total<contentLength) && (once>=0)) {
+            once = dataInputStream.read(buffer,total,contentLength);
+            total += once;
+        }
+
+        //对buffer中的数据进行拆分
+        int pos1=0;                  //pos1 记录 在buffer 中下一个 boundary 的位置
+        //pos0,pos1 用于 subBytes 的两个参数
+        int   pos0=byteIndexOf(buffer,boundary,0);   //pos0 记录 boundary 的第一个字节在buffer 中的位置
+        do{
+            pos0+=boundaryLen;                                 //记录boundary后面第一个字节的下标
+            pos1=byteIndexOf(buffer,boundary,pos0);
+            if (pos1==-1) {
+                break;
+            }
+            pos0+=2;          //考虑到boundary后面的 \r\n
+
+            parse(subBytes(buffer,pos0,pos1-2),values,files);      //考虑到boundary后面的 \r\n
+            pos0=pos1;
+        }while(true);
+        System.out.println(total+","+once);
+        Enumeration s = values.keys(),ss = files.keys();
+        System.out.println(s.nextElement().toString());
+        s.hasMoreElements();
+        System.out.println(s.nextElement().toString());
+
+
+    }
