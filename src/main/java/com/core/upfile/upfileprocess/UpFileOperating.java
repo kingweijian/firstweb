@@ -46,9 +46,18 @@ public class UpFileOperating  implements FileInterface {
     public UpFileOperating(int maxsize){
         this.maxsize = maxsize;
     }
+    
+    @Override
     public boolean move_uploaded(byte[] filecontent,String filename) throws IOException {
         return move_uploaded_file(filecontent,filename,upfilePath);
     }
+    /**
+    * @Description: 重载上传文件方法，可以指定自定义上传路径
+    * @Param: [filecontent, filename, filepath]
+    * @return: boolean
+    * @Author: weijian
+    * @Date: 2019/11/25
+    */
     public boolean move_uploaded(byte[] filecontent,String filename,String filepath) throws IOException {
         return move_uploaded_file(filecontent,filename,filepath);
     }
@@ -100,6 +109,6 @@ public class UpFileOperating  implements FileInterface {
 
     @Override
     public void setSavePath(String path) {
-
+        this.upfilePath = path;
     }
 }
