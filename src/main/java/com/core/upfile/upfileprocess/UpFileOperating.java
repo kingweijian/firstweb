@@ -1,15 +1,16 @@
 package com.core.upfile.upfileprocess;
 
 import com.core.upfile.FileInterface;
-import com.unit.Unit;
+import com.core.unit.Unit;
+import org.apache.log4j.Logger;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 
 
 public class UpFileOperating  implements FileInterface {
+    public final static Logger logger = Logger.getLogger(UpFileOperating.class);
     private int maxsize = 0;
     public final static String[] SUFFIXLIMIT = new String[]{"jpg","jpeg","gif","png",
             "doc","docx","docm","dotx","dotm",
@@ -38,7 +39,7 @@ public class UpFileOperating  implements FileInterface {
 
     private boolean move_uploaded_file(byte[] filecontent,String filename,String filepath) throws IOException {
 
-        System.out.println(filename+","+(filecontent.length<maxsize) +","+ (filepath != null) +","+ limitSuffix(filename));
+        logger.info(filename+","+(filecontent.length<maxsize) +","+ (filepath != null) +","+ limitSuffix(filename));
         if((filecontent.length<maxsize && filepath != null && limitSuffix(filename)) == false){ return false;}
         System.out.println(filecontent.length + " , " + maxsize);
         FileOutputStream fileOutputStream =  new FileOutputStream(filepath+filename);
@@ -50,9 +51,9 @@ public class UpFileOperating  implements FileInterface {
     private boolean limitSuffix(String filename){
         if(filename == null || filename.equals("")) return false;
         String[] s = Suffixlimit == null ? SUFFIXLIMIT : Suffixlimit;
-        System.out.println(Arrays.toString(s));
+        logger.info(Arrays.toString(s));
         String suffix = filename.substring(filename.lastIndexOf(".")+1,filename.length());
-        System.out.println(suffix);
+        logger.info(suffix);
         return  Unit.SearchArr(s,suffix);
     }
 

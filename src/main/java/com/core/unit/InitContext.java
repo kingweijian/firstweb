@@ -1,4 +1,4 @@
-package com.unit;
+package com.core.unit;
 
 import com.annotations.Requsetmapping;
 import org.apache.log4j.Logger;
@@ -26,7 +26,7 @@ public  class InitContext {
 //        ISSTART = false;
 //    }
     // 处理初始化
-    public static boolean init(){
+    protected static boolean init(){
         PropertyConfigurator.configure ("C:\\log4j.properties");
         if(!ISSTART) {
             System.out.println("InitContext ========= ????????>>>>>>>>>>: 我被执行了！！！！！！！");

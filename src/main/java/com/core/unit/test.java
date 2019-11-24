@@ -1,9 +1,5 @@
-package com.core;
+package com.core.unit;
 
-import com.unit.Data_Mapping;
-import com.unit.InitContext;
-import com.unit.ServletContextinterface;
-import com.unit.Unit;
 import com.urlprocess.URLProcess;
 import com.urlprocess.UrlInfo;
 import org.apache.log4j.Logger;
@@ -13,11 +9,12 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Map;
 
+/**
+ * 入口类
+ *  1. 读取需要解析包的路径
+ *  2. 进行容器初始化
+ */
 public class test implements Servlet {
 //    private String pacckage = "";
 //    private static boolean isstatr = false;
@@ -26,7 +23,7 @@ static Logger logger = Logger.getLogger(test.class);
     public void init(ServletConfig servletConfig) throws ServletException {
 //        pacckage =  servletConfig.getInitParameter("pacakge");
         InitContext.PAGEKETNAME  = servletConfig.getInitParameter("pacakge");
-        System.out.println(InitContext.PAGEKETNAME);
+        logger.info(InitContext.PAGEKETNAME);
         InitContext.init();
 
     }
@@ -40,6 +37,7 @@ static Logger logger = Logger.getLogger(test.class);
     public void service(ServletRequest servletRequest, ServletResponse servletResponse) throws IOException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         servletResponse.setCharacterEncoding("UTF-8");
+        // 是否可以单独提出来
         URLProcess urlProcess = new URLProcess(httpServletRequest);
         UrlInfo urlInfo = urlProcess.getUrlInfo_inttance();
 
