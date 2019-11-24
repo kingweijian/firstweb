@@ -6,9 +6,9 @@ import com.core.upfile.upfileprocess.UpFileOperating;
 import com.google.gson.Gson;
 import com.sql.dbutils.Operating;
 import com.sql.dbutils.SQL_DBUtil;
-import com.unit.ServletContextinterface;
+import com.core.unit.ServletContextinterface;
+import org.apache.log4j.Logger;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -20,6 +20,9 @@ import java.util.Map;
 
 @Requsetmapping({"/api/test","/api/aaa","/api/ttt"})
 public class Test implements ServletContextinterface {
+
+    public static  final Logger logger = Logger.getLogger(Test.class);
+
     HttpServletResponse httpServletResponse = null;
     HttpServletRequest httpServletRequest = null;
     Operating operating = new Operating();
@@ -38,8 +41,8 @@ public class Test implements ServletContextinterface {
         String filename =  (String) fileinfo.get("filename");
         boolean a = false ;
         try {
-             a = new UpFileOperating(100000).move_uploaded(filecontent,filename,"D://");
-            System.out.println(a);
+             a = new UpFileOperating(1000000).move_uploaded(filecontent,filename,"/Users/weijian/Pictures");
+            logger.info("处理结果  ——--  >>  "+a);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,6 +1,6 @@
 package com.urlprocess;
 
-import com.unit.Unit;
+import com.core.unit.Unit;
 
 import java.util.Objects;
 

@@ -18,20 +18,26 @@ public  class Data_Mapping {
         if(InitContext.isISSTART())return;
         Data_Mapping.object = object;
     }
-
+    /**
+    * @Description: 
+    * @Param: [urlinfo, maps]
+    * @return: java.lang.String[]
+    * @Author: weijian
+    * @Date: 2019/11/24
+    */
     public static String[] execution(String urlinfo,Map<String, Object> maps){
         logger.info("urlinfo == >> " +urlinfo + "\nmaps ===> " + maps);
 //        System.out.println("执行："+maps);
         // 第一层 获取 类名
-        Object[] names = getName(RemoveFirst(urlinfo).split("/"),maps,0);
+        Object[] names = getName(RemoveFirstStr(urlinfo).split("/"),maps,0);
 //        System.out.println(Arrays.toString(names));
         // 先判断 urlinfo 是否合法，不合法执行下面的，合法执行第二层查找 1 *** 这里的合法是指第一层是否包含urlinfo
 
-        // 判断第一层是否存在，不存在会返回null 2    // 先不合法。。。
+        // 判断第一层是否存在，不存在会返回null
 
         if(names == null )return null;
         //  去除第一层            将第一次出现的字符串替换成空 ↓
-        String two = RemoveFirst(urlinfo.replaceFirst((String) names[1],""));
+        String two = RemoveFirstStr(urlinfo.replaceFirst((String) names[1],""));
 //        System.out.println(two);
         // 判断去除第一层截取之后是否为空，为空就代表没有后续了，直接返回
         if(two == "") return null;
@@ -75,7 +81,7 @@ public  class Data_Mapping {
                     if(obj == null) continue;
                     twos = (Map<String, ?>) obj;
                     if (twos != null) {
-                        System.out.println(className+","+ sumName);
+                        logger.info(className+","+ sumName);
                         ret[0] = obj;
                         ret[1] = sumName;
                         istrue = true;
@@ -107,7 +113,7 @@ public  class Data_Mapping {
         return !istrue ? null : ret;
     }
 
-    private static String RemoveFirst(String s){
+    private static String RemoveFirstStr(String s){
         if(s==null || s.equals("")) return s;
 
         return s.substring(1,s.length());

@@ -26,7 +26,7 @@
   </filter-mapping>
   <servlet>
     <servlet-name>test</servlet-name>
-    <servlet-class>com.core.test</servlet-class>
+    <servlet-class>com.core.unit.test</servlet-class>
     <init-param>
       <param-name>pacakge</param-name>
       <param-value>com.handlers</param-value>

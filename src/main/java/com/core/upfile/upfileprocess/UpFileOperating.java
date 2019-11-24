@@ -12,6 +12,7 @@ import java.util.Arrays;
 public class UpFileOperating  implements FileInterface {
     public final static Logger logger = Logger.getLogger(UpFileOperating.class);
     private int maxsize = 0;
+    private String upfilePath = null;
     public final static String[] SUFFIXLIMIT = new String[]{"jpg","jpeg","gif","png",
             "doc","docx","docm","dotx","dotm",
             "xls","xlsx","xlsm","xltm","xlsb","xlam",
@@ -24,24 +25,45 @@ public class UpFileOperating  implements FileInterface {
 
 
     public UpFileOperating(){}
+
     public UpFileOperating(int maxsize,String[] suffixlimit){
         this.maxsize = maxsize;
         this.Suffixlimit = suffixlimit;
 
     }
+    /**
+    * @Description: 这个方法是初始化 上传的大小 后缀 上传路径这三个主要参数的
+    * @Param: [maxsize, suffixlimit, upfilePath]
+    * @return:
+    * @Author: weijian
+    * @Date: 2019/11/24
+    */
+    public UpFileOperating(int maxsize,String[] suffixlimit,String upfilePath){
+        this.maxsize = maxsize;
+        this.Suffixlimit = suffixlimit;
+        this.upfilePath = upfilePath;
+    }
     public UpFileOperating(int maxsize){
         this.maxsize = maxsize;
-
+    }
+    public boolean move_uploaded(byte[] filecontent,String filename) throws IOException {
+        return move_uploaded_file(filecontent,filename,upfilePath);
     }
     public boolean move_uploaded(byte[] filecontent,String filename,String filepath) throws IOException {
         return move_uploaded_file(filecontent,filename,filepath);
     }
 
-    private boolean move_uploaded_file(byte[] filecontent,String filename,String filepath) throws IOException {
 
-        logger.info(filename+","+(filecontent.length<maxsize) +","+ (filepath != null) +","+ limitSuffix(filename));
-        if((filecontent.length<maxsize && filepath != null && limitSuffix(filename)) == false){ return false;}
-        System.out.println(filecontent.length + " , " + maxsize);
+    private boolean move_uploaded_file(byte[] filecontent,String filename,String filepath) throws IOException {
+        boolean isSuffix = limitSuffix(filename);
+        logger.info(filename+" -- 判断结果不能有一个false  --- 大小判断  - "+(filecontent.length<maxsize) +", 路径判断 - "+ (filepath != null) +", 后缀判断 - "+ isSuffix );
+        filepath = checkPath(filepath);
+        if((filecontent.length<maxsize && filepath != null && isSuffix) == false)
+        {
+            logger.info("大小 - " +maxsize + "， 文件实际大小 - " + filecontent.length + " ， 路径 - " + filepath + ", 后缀 - " + isSuffix);
+            return false;
+        }
+        logger.info(filecontent.length + " , " + maxsize);
         FileOutputStream fileOutputStream =  new FileOutputStream(filepath+filename);
         fileOutputStream.write(filecontent);
         fileOutputStream.close();
@@ -57,6 +79,14 @@ public class UpFileOperating  implements FileInterface {
         return  Unit.SearchArr(s,suffix);
     }
 
+
+    public  String checkPath(String path){
+        if(path != null && !path.equals("")){
+
+            return path.endsWith("/") ? path : path.concat("/");
+        }
+        return null;
+    }
 
     @Override
     public void setMaxSize(int size) {
