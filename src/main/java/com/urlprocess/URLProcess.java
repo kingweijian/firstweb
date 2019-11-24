@@ -1,9 +1,8 @@
 package com.urlprocess;
 
-import com.unit.Unit;
+import com.core.unit.Unit;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.swing.plaf.nimbus.State;
 
 public class URLProcess {
     private HttpServletRequest httpServletRequest = null;

@@ -1,4 +1,4 @@
-package com.unit;
+package com.core.unit;
 
 import com.annotations.Requsetmapping;
 import org.apache.log4j.Logger;
@@ -26,10 +26,10 @@ public  class InitContext {
 //        ISSTART = false;
 //    }
     // 处理初始化
-    public static boolean init(){
-        PropertyConfigurator.configure ("C:\\log4j.properties");
+    protected static boolean init(){
+//        PropertyConfigurator.configure ("C:\\log4j.properties");
         if(!ISSTART) {
-            System.out.println("InitContext ========= ????????>>>>>>>>>>: 我被执行了！！！！！！！");
+            logger.info("InitContext ========= ????????>>>>>>>>>>: 我被执行了！！！！！！！");
             logger.info("我被执行了");
             try {
                 Map<String, Object> maps = getContent();
@@ -88,7 +88,7 @@ public  class InitContext {
        {
            // 以下是获取每一个类的注释
            className = (String) iterator.next();
-           logger.info( "wadw == >> " + className);
+           logger.info( "被加载类 == >> " + className);
            c = Class.forName(className);
            requsetmapping = isRequestMapping(c);
            String[] commen = requsetmapping == null ? null : getComment(requsetmapping);
