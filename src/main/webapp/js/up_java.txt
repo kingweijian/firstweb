@@ -1,3 +1,4 @@
+  public static Logger logger = Logger.getLogger(this.class)
   public void test(HttpServletRequest httpServletRequest) throws IOException {
         String contentType=httpServletRequest.getContentType();
         int start=contentType.indexOf("boundary=");
