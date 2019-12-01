@@ -3,6 +3,7 @@ package com.filter;
 
 import com.core.upfile.upfileprocess.Up_file;
 import com.urlprocess.UrlInfo;
+import org.apache.log4j.Logger;
 
 
 import javax.servlet.*;
@@ -13,8 +14,15 @@ import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
-
+/**
+* @Description: 这个类主要是对请求处理
+* @Param:
+* @return:
+* @Author: weijian
+* @Date: 2019/12/1
+*/
 public class DemandFilter implements Filter {
+    public static Logger logger = Logger.getLogger(DemandFilter.class);
     @Override
     public void init(FilterConfig filterConfig) {
 
@@ -25,12 +33,12 @@ public class DemandFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
         httpServletRequest.setCharacterEncoding("UTF-8");
-        System.out.println(" / ====================================  /");
+        logger.info(" / ====================================  /");
         String contenttype =  httpServletRequest.getContentType();
-        System.out.println(contenttype);
+        logger.info(contenttype);
         int type = ( contenttype == null) ? -1 : contenttype.indexOf("boundary=");
 
-//        System.out.println(type);
+//        logger.info(type);
         if(type>-1){
             Up_file up_file = new Up_file(httpServletRequest);
             up_file.test_my();
@@ -38,11 +46,11 @@ public class DemandFilter implements Filter {
             httpServletRequest.setAttribute("fileinfo", up_file.files);
         }
 
-     //   System.out.println("QueryString:" + httpServletRequest.getQueryString());
+     //   logger.info("QueryString:" + httpServletRequest.getQueryString());
         httpServletRequest.setAttribute("urlinfo",getUrlInfo(httpServletRequest));
         httpServletRequest.setAttribute("params",getParameters(httpServletRequest)); // 获取get 中的参数
 
-        System.out.println(" / ====================================  /");
+        logger.info(" / ====================================  /");
         filterChain.doFilter(httpServletRequest,httpServletResponse);
     }
     private UrlInfo getUrlInfo(HttpServletRequest httpServletRequest){
@@ -63,7 +71,7 @@ public class DemandFilter implements Filter {
     }
     @Override
     public void destroy() {
-        System.out.println(" --------------- DemandFilter destroy -----------------------");
+        logger.info(" --------------- DemandFilter destroy -----------------------");
     }
     public String get_form_data(InputStream inputStream) throws IOException {
         if(inputStream == null ) return null;

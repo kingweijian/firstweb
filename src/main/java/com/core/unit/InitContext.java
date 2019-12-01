@@ -12,11 +12,15 @@ import java.util.Set;
 
 public  class InitContext {
     public static String PAGEKETNAME = null;
+    // 容器启动标示
     private static  boolean ISSTART;
     public static Logger logger = Logger.getLogger(InitContext.class);
 
 
-
+    /**
+     * 判断容器是否启动
+     * @return 容器启动标示
+     */
     public static boolean isISSTART() {
         return ISSTART;
     }
@@ -93,7 +97,7 @@ public  class InitContext {
            requsetmapping = isRequestMapping(c);
            String[] commen = requsetmapping == null ? null : getComment(requsetmapping);
            if(commen == null)continue;
-           // 遍历注释，把注释存入map中
+           // 遍历方法注释，把注释存入map中
            for (String s:commen) {
                if(commenmap.get(s) != null){
                    chile = (Map<String, Object>) commenmap.get(s);
@@ -114,7 +118,7 @@ public  class InitContext {
         return commenmap;
    }
 
-   private static Requsetmapping isRequestMapping(Class<?>  cati) throws ClassNotFoundException {
+   private static Requsetmapping isRequestMapping(Class<?>  cati) {
 
        Requsetmapping requsetmapping = null;
        if(cati.isAnnotationPresent(Requsetmapping.class)){

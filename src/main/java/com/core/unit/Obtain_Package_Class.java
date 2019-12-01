@@ -1,6 +1,7 @@
 package com.core.unit;
 
 import com.annotations.Requsetmapping;
+import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,10 +17,12 @@ import java.util.regex.Pattern;
  *
  */
 public class Obtain_Package_Class {
+    public static Logger logger = Logger.getLogger(Obtain_Package_Class.class);
     private static Requsetmapping requsetmapping = null;
     public static final String CLASS_SUFFIX = ".class";
-
-    private static final Pattern INNER_PATTERN = Pattern.compile("\\$(\\d+).", Pattern.CASE_INSENSITIVE);
+    // 正则判断是否包含数字
+//    private static final Pattern INNER_PATTERN = Pattern.compile("\\$(\\d+).", Pattern.CASE_INSENSITIVE);
+    private static final Pattern INNER_PATTERN = Pattern.compile("\\$+.", Pattern.CASE_INSENSITIVE);
 
     public Obtain_Package_Class() {
         super();
@@ -28,20 +31,21 @@ public class Obtain_Package_Class {
     public Set<String> findCandidateClasses(String packageName) throws IOException {
         // 查询 是否以 点结束 如果是点结束的话就去掉点
         if (packageName.endsWith(".")) {
-            packageName = packageName.substring(0, packageName.length()-1);
+            packageName = packageName.substring(0, packageName.length() - 1);
         }
 
         Map<String, String> classMap = new HashMap<String, String>(32);
-        String path = packageName.replace(".", "/");
+        String path = packageName.replace(".", "/"), protocol;
 
         Enumeration<URL> urls = findAllClassPathResources(path);
-        while (urls!=null && urls.hasMoreElements()) {
+        while (urls != null && urls.hasMoreElements()) {
             URL url = urls.nextElement();
-
-            String protocol = url.getProtocol();
-            if ("file".equals(protocol)) {
+            // 获得协议  比如 file:// http://
+            protocol = url.getProtocol();
+            logger.info(protocol);
+            if ("file".equals(url.getProtocol())) {
                 String file = URLDecoder.decode(url.getFile(), "UTF-8");
-//                System.out.println(packageName);
+                logger.info(file);
                 parseClassFile(new File(file), packageName, classMap);
             } else if ("jar".equals(protocol)) {
                 parseJarFile(url, classMap);
@@ -50,14 +54,23 @@ public class Obtain_Package_Class {
 //        System.out.println(classMap.values());
         return new HashSet(classMap.values());
     }
-    // 遍历 packageName 中的所有文件 packageName 是一个路径
+
+    /**
+     * 遍历 packageName 中的所有文件 packageName 是一个路径
+     * 次方法需要做的事是 查找目录下的所有文件并把文件放入到map中
+     * @param classfile
+     * @param packageName
+     * @param classMap
+     */
     protected void parseClassFile(File classfile, String packageName, Map<String, String> classMap){
+        // 判断这个文件的抽象目录是否存在
         if (!classfile.exists()) {
             return;
         }
         // 第一次进来是对的目录，但是回调的时候 在加
-
+        // 如果这个文件是一个目录
         if(classfile.isDirectory()){
+            // 获得这个目录下面的缩影文件
             File[] files = classfile.listFiles();
             for (File file : files) {
                 parseClassFile(file, packageName+"."+file.getName(), classMap);
@@ -85,10 +98,10 @@ public class Obtain_Package_Class {
     private boolean addToClassMap(String name, Map<String, String> classMap){
 
         if(INNER_PATTERN.matcher(name).find()){ //过滤掉匿名内部类
-//            System.out.println("anonymous inner class:"+name);
+            logger.info("anonymous inner class:"+name);
             return false;
         }
-//        System.out.println("class:"+name);
+        logger.info("class:"+name);
         if(name.indexOf("$")>0){ //内部类
 //            System.out.println("inner class:"+name);
         }
@@ -98,7 +111,7 @@ public class Obtain_Package_Class {
         return true;
     }
     // 获取 完整路径
-    protected Enumeration<URL> findAllClassPathResources(String path) throws IOException {
+    public Enumeration<URL> findAllClassPathResources(String path) throws IOException {
         if(path.startsWith("/")){
             path = path.substring(1);
         }
@@ -106,17 +119,21 @@ public class Obtain_Package_Class {
 
         return urls;
     }
-
+    // 获得磊加载器 从当前的类加载器中获取当前路径
     public static ClassLoader getClassLoader() {
         ClassLoader cl = null;
         try {
+            // 获得单前线程的类加载器
             cl = Thread.currentThread().getContextClassLoader();
+            logger.info(Thread.currentThread().getContextClassLoader());
         } catch (Throwable ex) {
             // Cannot access thread context ClassLoader - falling back to system class loader...
+            // 不能访问这个类加载器 可以返回系统类加载器
         }
         Class<?> cls = Obtain_Package_Class.class;
         if (cl == null) {
             // No thread context class loader -> use class loader of this class.
+            // 没有线程上下文加载器的话 可以使用这个类的类加载器
             cl = cls.getClassLoader();
         }
         return cl;

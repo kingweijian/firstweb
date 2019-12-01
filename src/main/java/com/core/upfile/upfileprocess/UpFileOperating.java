@@ -12,6 +12,7 @@ import java.util.Arrays;
 public class UpFileOperating  implements FileInterface {
     public final static Logger logger = Logger.getLogger(UpFileOperating.class);
     private int maxsize = 0;
+    // 文件上传路径，通过对象初始化时赋值
     private String upfilePath = null;
     public final static String[] SUFFIXLIMIT = new String[]{"jpg","jpeg","gif","png",
             "doc","docx","docm","dotx","dotm",

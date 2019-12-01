@@ -8,6 +8,7 @@ import java.util.Map;
 
 public  class Data_Mapping {
     public static Logger logger = Logger.getLogger(Data_Mapping.class);
+    // 解析包后的 类和方法放在这个对象中
     private static Map<String, Object> object = null;
 
     public static Map<String, Object> getObject() {
@@ -18,6 +19,16 @@ public  class Data_Mapping {
         if(InitContext.isISSTART())return;
         Data_Mapping.object = object;
     }
+
+    /**
+     * 默认使用
+     * @param urlinfo
+     * @return
+     */
+    public static String[] execution(String urlinfo){
+        return execution(urlinfo,object);
+    }
+
     /**
     * @Description: 
     * @Param: [urlinfo, maps]

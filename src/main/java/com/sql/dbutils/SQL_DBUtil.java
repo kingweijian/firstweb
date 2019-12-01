@@ -4,13 +4,16 @@ package com.sql.dbutils;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import com.mysql.jdbc.Driver;
+import org.apache.log4j.Logger;
 
 public class SQL_DBUtil implements DBOperating{
     private  static String NAME = "root";
-    private  static String PASSWORD = "1234";
+    private  static String PASSWORD = "123456";
     private static String URL = "jdbc:mysql://localhost:3306/";
     private  static String DRIVER = "com.mysql.jdbc.Driver";
     private Connection conn = null;
+    public static Logger logger = Logger.getLogger(SQL_DBUtil.class);
 
     public SQL_DBUtil (String dbname){
         URL += dbname + "?useUnicode=true&characterEncoding=UTF-8";
@@ -33,11 +36,11 @@ public class SQL_DBUtil implements DBOperating{
         try {
             Class.forName(DRIVER);
             conn = DriverManager.getConnection(URL, NAME, PASSWORD);
-            System.out.println("链接数据库成功！！！");
+            logger.info("--- 数据库连接成功！！！！ ---- ");
         } catch (ClassNotFoundException  e) {
 
-            //System.out.println("--------驱动类没找到！！！--------");
-            e.printStackTrace();
+
+            logger.error(" ---- 驱动类没有找到 ----- ",e);
         }
         return conn;
     }
@@ -50,8 +53,9 @@ public class SQL_DBUtil implements DBOperating{
     public  void closeConn(){
         try {
             conn.close();
+            logger.info(" ---- 数据库关闭成功！！！ ----");
         } catch (SQLException e) {
-            e.printStackTrace();
+           logger.error(" ---- 数据库关闭异常 ---- " , e);
         }
     }
 

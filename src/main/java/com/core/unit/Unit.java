@@ -1,6 +1,8 @@
 package com.core.unit;
 
 
+import com.sql.dbutils.Operating;
+import com.sql.dbutils.SQL_DBUtil;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +12,10 @@ import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.security.MessageDigest;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -56,15 +62,22 @@ public class Unit {
     public static <T> T isAir(T t){
         return t == null ? null : t;
     }
-
+    /**
+    * @Description: 这个方法是根据url调用指定方法的 主要方法
+    * @Param: [url, httpServletRequest, httpServletResponse]
+    * @return: void
+    * @Author: weijian
+    * @Date: 2019/11/30
+    */
     public static void invokewWeb(String url,HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse) throws IOException {
         PrintWriter printWriter = httpServletResponse.getWriter();
         Map<String,Object> content = Data_Mapping.getObject();
 //            System.out.println("InitContext  = "+content);
 //            System.out.println("return ==> :"+ Arrays.toString(Data_Mapping.execution(urlInfo.getServletPath(),content)));
 //            System.out.println(urlInfo.getReuqsetstr() + " \n" + content.toString());
+        // 调用解析url方法
         String[] s = Data_Mapping.execution(url,content);
-
+        logger.debug(Arrays.toString(s));
         if(s!=null){
             logger.info("不为空");
             try {
@@ -80,12 +93,29 @@ public class Unit {
                 }
                 // 返回类型 str , json ,
                 Object ret =  m.invoke(obj);
-//                  System.out.println( "反射调用："+obj);
+                logger.debug( "反射调用："+obj.toString());
                 printWriter.print(ret);
+                return;
             } catch (Exception e) {
-                e.printStackTrace();
+               logger.error("出现异常 --- ",e);
+               httpServletResponse.setStatus(500);
+//               new Error(e);
+            }finally {
+                printWriter.close();
+
             }
         }
         logger.info("空的"  + s);
     }
+    public static void closeSQL(Statement statement, ResultSet resultSet, Connection connection) throws SQLException {
+        if(statement != null) statement.close();
+        if(resultSet != null) resultSet.close();
+        if(connection != null) connection.close();
+    }
+    public static void closeSQL(Statement statement, ResultSet resultSet, SQL_DBUtil sql_dbUtil) throws SQLException {
+        if(statement != null) statement.close();
+        if(resultSet != null) resultSet.close();
+        if(sql_dbUtil != null) sql_dbUtil.closeConn();
+    }
+
 }
