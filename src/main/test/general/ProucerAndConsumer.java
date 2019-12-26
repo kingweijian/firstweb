@@ -5,6 +5,7 @@ import java.util.concurrent.Executors;
 
 /**
  * 生产者与消费者例子
+ * 这里捕获异常没用，需要使用 线程工程 ，并在线程工程中设置捕获异常
  * 一个饭店，厨师和服务员
  * ClassName ProucerAndConsumer
  * Author weijian
