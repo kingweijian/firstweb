@@ -281,7 +281,6 @@ public class TestUnit {
     @Test
     public void ProucerAndConsumerTest(){
         new Restaurant();
-        general.Unit.sleep(5000);
     }
 
     @Test
