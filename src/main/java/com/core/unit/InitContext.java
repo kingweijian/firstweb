@@ -2,7 +2,6 @@ package com.core.unit;
 
 import com.annotations.Requsetmapping;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 
 import java.io.IOException;
 import java.util.HashMap;
