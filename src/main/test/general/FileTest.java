@@ -12,7 +12,18 @@ import java.io.IOException;
 
 import java.util.*;
 
-
+ enum DD {
+    C("C",String.class),
+    A("A",Integer.class),
+    N("N",Double.class),
+    TEXT("TEXT",String.class);
+    public String name ;
+    public Class c;
+    DD(String name , Class c) {
+        this.name = name;
+        this.c = c;
+    }
+}
 public class FileTest {
    final static String filename = "/Users/weijian/Documents/unitfile/OFD_888.ini";
    final static Logger logger = Logger.getLogger(FileTest.class);
@@ -34,7 +45,7 @@ public class FileTest {
     public void testinit(){}
     @Test
     public void testContext(){
-        String value = "586586                                                                                                                  568856                        6568586              20200318000000000463870113644636343871                 200317test1                                                                                                             2020031814521721000008656                          0126347              0108A00002795    387      001                                                                                                         3652259587433654                                                                                                   0000000012345678912             387                            200317test1                                                                0000000001                           招商银行13                                                  3652259587433654                     00000000   8866                                                         20991231                5                                                                                                                                                                   000000000000000000 8                                              0000000000000000                                                             2                                                                                                                \n" ;
+        String value = "586586                                                                                                                  568856                        6568586              20200318000000000463870113644636343871                 200317test1                                                                                                             2020031814521721000008656                          0126347              0108A00002795    387      001                                                                                                         3652259587433654                                                                                                   0000000012345678912             387                            200317test1                                                                0000000001                           招商银行13                                                  3652259587433654                     00000000   8866                                                         20991231                5                                                                                                                                                                   000000000000000000 8                                              0000000000000000                                                             2                                                                                                          \n" ;
         String value1 = "湖北省武汉市                                                                                                                                                               bbbbbbbbyyy000cccccccc  1JGZyyycccccccc                个人yyydddddddd                                                                                                         bbbbbbbb1500001999999                                                   JYZHyyyffffffff  yyy      zzz                                                                                                 19990829Qyyycccccccc       yyy 01 ASP@139.C0M                                                     02                       0000000013489883848             yyy                            个人1               0                    Zyyyeeeeeeee                      0000000001                           个人yyydddddddd                                             ZJZH01                               00000000156yyy                                                                                                                                                                                                                                                      000000000000000000                                                0000000000000000                                                             2                                                                                                                 \n";
         logger.info(value.length());
         logger.info(value1.length());
@@ -46,7 +57,6 @@ public class FileTest {
  //            类型		 长度	 保留位数	 中文注释	 字段名
 //            C,		 60,		0	,	 通讯地址,	 Address
             // 第一步，拿到字段信息
-
             for (int i = 0 ; i < file01.size ()-1 ; i++){
                 logger.info(Arrays.toString(file01.get (i).toArray())  + " --- " + file01.get(i).get (1));
                 // 分割数据
@@ -114,22 +124,64 @@ public class FileTest {
     public static String BackUpStr(String value,int len){
         String ret;
         int difference = value.length () - len;
+        if (difference == 0)
+            return value;
         if (difference > 0){
             ret = value.substring (0,len);
             return ret;
         }
         ret = value;
         if(difference < 0){
-            for (int i = difference; i >=0 ; i++ ){
+            for (int i = difference; i < 0 ; i++ ){
                 ret += " ";
             }
             return ret;
         }
 
-        if (difference == 0)
-            return value;
 
         return null;
+    }
+
+    public <T> T processField(String value,List info){
+//        T ret;
+        if(info.get (0).equals ("C")){
+            value = value.trim ();
+            return (T) value;
+        }
+
+        if(info.get (0).equals ("A")){
+            return (T) Integer.valueOf (value.trim ());
+        }
+
+        if(info.get (0).equals ("N")){
+            int len = Integer.valueOf ((String) info.get (1));
+            value = value.trim ();
+
+            return (T) Integer.valueOf (value.trim ());
+        }
+        return null;
+    }
+
+    @Test
+    public void testprocessField(){
+
+        List<String> c = new ArrayList<String> (),a = new ArrayList<String> (),n = new ArrayList<String> (),text = new ArrayList<String> () ;
+        c.add ("C");
+        a.add ("A");
+        n.add ("N");
+        n.add ("2");
+        text.add ("TEXT");
+
+
+       String str = processField("   243dwad4  ",c);
+       logger.info (str);
+        int num = processField("2434",a);
+        logger.info (num);
+//        double decimal = processField("2434000",n);
+//        logger.info (decimal);
+
+        String s = "254523.670";
+        logger.info (Double.parseDouble (s));
     }
 
 }
