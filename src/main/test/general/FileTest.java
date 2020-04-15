@@ -14,16 +14,17 @@ import java.util.*;
 
 
 public class FileTest {
-   final static String filename = "D:/OFD_888.ini";
+   final static String filename = "/Users/weijian/Documents/unitfile/OFD_888.ini";
    final static Logger logger = Logger.getLogger(FileTest.class);
 
     static Map<String,Map<String,List>> configs ;
+    static Map<String,List> sequenceFiled;
     @Before
     public void init(){
         Ini ini = null;
         try {
             ini = new Ini(new File(filename));
-            configs =  initConfigFile(ini);
+            initConfigFile(ini);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -37,21 +38,25 @@ public class FileTest {
         String value1 = "湖北省武汉市                                                                                                                                                               bbbbbbbbyyy000cccccccc  1JGZyyycccccccc                个人yyydddddddd                                                                                                         bbbbbbbb1500001999999                                                   JYZHyyyffffffff  yyy      zzz                                                                                                 19990829Qyyycccccccc       yyy 01 ASP@139.C0M                                                     02                       0000000013489883848             yyy                            个人1               0                    Zyyyeeeeeeee                      0000000001                           个人yyydddddddd                                             ZJZH01                               00000000156yyy                                                                                                                                                                                                                                                      000000000000000000                                                0000000000000000                                                             2                                                                                                                 \n";
         logger.info(value.length());
         logger.info(value1.length());
-        Map<String,List> file01 = configs.get("01");
-       List<String> iteminfo = new ArrayList<String>(), reaulst = new ArrayList<String>();
+        List<List> file01 = sequenceFiled.get("01");
+       List<String> reaulst = new ArrayList<String>();
         int start = 0,end;
-        for(String key : file01.keySet()){
+        value = BackUpStr (value,1450);
+        logger.info(value.length());
  //            类型		 长度	 保留位数	 中文注释	 字段名
 //            C,		 60,		0	,	 通讯地址,	 Address
             // 第一步，拿到字段信息
-            iteminfo = file01.get(key);
-            logger.info(Arrays.toString(iteminfo.toArray())  + " --- " + iteminfo.get(1));
-            // 分割数据
-            end = Integer.valueOf(iteminfo.get(1));
-            logger.info(value.substring(start, start+end));
-            start += end;
 
-        }
+            for (int i = 0 ; i < file01.size ()-1 ; i++){
+                logger.info(Arrays.toString(file01.get (i).toArray())  + " --- " + file01.get(i).get (1));
+                // 分割数据
+                end = Integer.valueOf( (String)file01.get(i).get (1));
+                logger.info(value.substring(start, start+end));
+                start += end;
+            }
+
+
+
     }
     @Test
     public  void testFileIni(){
@@ -65,11 +70,11 @@ public class FileTest {
 
     }
 
-    public static Map<String,Map<String, List>>   initConfigFile(Ini ini){
+    public static void   initConfigFile(Ini ini){
         // 最终返回的对象，里面是完整的数据（文件里面的字段顺序不是按顺序排序的）
-        Map<String,Map<String,List>> files = new HashMap<String, Map<String,List>>();
+        configs = new HashMap<String, Map<String,List>>();
         // 这个是排序的字段
-        Map<String,List> sequenceFiled = new HashMap<String, List>();
+        sequenceFiled = new HashMap<String, List>();
         Map<String,List> prams ;
         List<List> sequence;
         String[] splitValue;
@@ -90,12 +95,12 @@ public class FileTest {
                     sequence.add(Arrays.asList(splitValue));
                 }
            }
-           files.put(key,prams);
+            configs.put(key,prams);
            sequenceFiled.put(key,sequence);
         }
-        for (String key :sequenceFiled.keySet()){
-            List objectMap =  (List) sequenceFiled.get(key);
-            logger.info(Arrays.toString(objectMap.toArray()));
+//        for (String key :sequenceFiled.keySet()){
+//            List objectMap =  (List) sequenceFiled.get(key);
+//            logger.info( key + " -- " +Arrays.toString(objectMap.toArray()));
 //            for (String key1 : objectMap.keySet()){
 //                if(objectMap.get(key1) instanceof String)
 //                    System.out.println(objectMap.get(key1));
@@ -103,8 +108,28 @@ public class FileTest {
 //                    System.out.println(Arrays.toString((String[]) objectMap.get(key1)));
 //
 //            }
+//        }
+//        return files;
+    }
+    public static String BackUpStr(String value,int len){
+        String ret;
+        int difference = value.length () - len;
+        if (difference > 0){
+            ret = value.substring (0,len);
+            return ret;
         }
-        return files;
+        ret = value;
+        if(difference < 0){
+            for (int i = difference; i >=0 ; i++ ){
+                ret += " ";
+            }
+            return ret;
+        }
+
+        if (difference == 0)
+            return value;
+
+        return null;
     }
 
 }
