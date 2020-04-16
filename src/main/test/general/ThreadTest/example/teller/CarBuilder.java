@@ -225,12 +225,15 @@ abstract class Robot implements Runnable{
             while (!Thread.currentThread ().isInterrupted ()){
                 performService ();
                 assembler.barrier ().await ();
+
                 powerDown ();
             }
         }catch (InterruptedException e){
             logger.info ("Exiting " + this + " via interrupt");
         } catch (BrokenBarrierException e) {
             logger.info ("BrokenBarrierException");
+        }catch (NullPointerException e){
+            logger.info((assembler == null) + " , " + this);
         }
         logger.info (this + " Off");
     }
@@ -275,6 +278,8 @@ class RobotPool{
         }
         wait ();
         hire (robotType,d);
+        String s =
+                "wdwadd                                                                                                                                                                     2020031800000000017387010320800195805085912            个人1                                                                                                                   202003181457141100000                                                   9904A00002700    387      001                                                                                                 19580508-201912250003000000                                                                                                0000000012345678912             387                            个人1               1                                                      0000000001                           个人1                                                       -2019122500030000001                 000000001569904                                                         20991231                5                                                                                                                                                                   000000000000000000                                                0000000000000000                                                             2                                                                                                                 ";
     }
 
     public synchronized void release(Robot robot) { add (robot); }
