@@ -57,25 +57,36 @@ public class FileTest {
         filedetail03.put("filenum","03");
 
         fileinfo.put("03",filedetail03);
+        Map<String,String> filedetail05 = new HashMap<String,String>();
+        filedetail05.put("contextLen","192");
+        filedetail05.put("filenum","05");
+
+        fileinfo.put("05",filedetail05);
     }
     @Test
     public void testinit(){}
+
+    // 解析文件，主要用于解析申请文件，之后方便生成确认文件
     @Test
     public void testContext(){
         //读取文件
 
         // 获得文件关键字段
-        String filenum = "03";
+        String filenum = "05";
         String value = "586586                                                                                                                  568856                        6568586              20200318000000000463870113644636343871                 200317test1                                                                                                             2020031814521721000008656                          0126347              0108A00002795    387      001                                                                                                         3652259587433654                                                                                                   0000000012345678912             387                            200317test1                                                                0000000001                           招商银行13                                                  3652259587433654                     00000000   8866                                                         20991231                5                                                                                                                                                                   000000000000000000 8                                              0000000000000000                                                             2                                                                                                          \n" ;
         String value1 = "湖北省武汉市                                                                                                                                                               bbbbbbbbyyy000cccccccc  1JGZyyycccccccc                个人yyydddddddd                                                                                                         bbbbbbbb1500001999999                                                   JYZHyyyffffffff  yyy      zzz                                                                                                 19990829Qyyycccccccc       yyy 01 ASP@139.C0M                                                     02                       0000000013489883848             yyy                            个人1               0                    Zyyyeeeeeeee                      0000000001                           个人yyydddddddd                                             ZJZH01                               00000000156yyy                                                                                                                                                                                                                                                      000000000000000000                                                0000000000000000                                                             2                                                                                                                 \n";
         String value04 = "2020040900000000083387202020041315600000000000000000000000000000000D4990102020040909022900000108A00002722    387      00000000000000000000003000000000149D4100008795438700000000011      110000                       20200413000000000000000000000010000387                                      00000000001        0000000000000000000000000000000000000000000                                                                                20200409                                         00000000000000000000060000000000000000000000000000000000000010000         000000000000000000000000000000000000000000000000000000000000000000000000        0000000000100                 0000000000                         8866                                                      00                                                                  00000 0000000000000000    00000      00000030000000000000000000100000000000000000000000000000000000000000000000000000000000000000000 38700000000011      00000000000000000000000000000000000000000000000000000000000000000        000000000000000000000000000000000000                                                         0000000000060000 20200413000000000000000000000000000000000000000000000000                \n";
         String value03 = "202004100000000002638720D49901 202004100945240108A00001840    387      00000000000000000000000001000000020D4100008792110000                       156387                                      10000000                                                        00000                 0000000000                              0000000000000100                                                                  00000000000000000                 1                                  8866                                                      00               2                                          00000 0000000000000000    10000                       00000000000000000000000000\n";
-        logger.info(value.length());
-        logger.info(value1.length());
+        String value05 = "0000000040000000000000004000000020200413D499020108A00001840    387      D410000879210000000000000000387                          000000000000000000         000000000000000000000000000000000 1\n";
+//        logger.info(value05.length());
+//        logger.info(value05.length());
         List<List> file01 = sequenceFiled.get(filenum);
        List<String> reaulst = new ArrayList<String>();
         int start = 0,end;
-        value = BackUpStr (value03,Integer.valueOf(fileinfo.get(filenum).get("contextLen")));
+        List<String> info = new ArrayList<String>();
+        info.add("C");
+        info.add(fileinfo.get(filenum).get("contextLen"));
+        value = BackUpStr (value05,info);
         logger.info(value.length());
  //            类型		 长度	 保留位数	 中文注释	 字段名
 //            C,		 60,		0	,	 通讯地址,	 Address
@@ -93,6 +104,7 @@ public class FileTest {
 
 
     }
+    // 读取 ini 文件
     @Test
     public  void testFileIni(){
         String filename = "D:/OFD_888.ini";
@@ -104,7 +116,7 @@ public class FileTest {
             System.out.println(((String[])configs.get("01").get("Specification").toArray())[3]);
 
     }
-
+    // 初始化配置文件，解析配置文件，按照我们想要的存储方式存储
     public static void   initConfigFile(Ini ini){
         // 最终返回的对象，里面是完整的数据（文件里面的字段顺序不是按顺序排序的）
         configs = new HashMap<String, Map<String,List>>();
@@ -137,7 +149,7 @@ public class FileTest {
                 }
            }
             configs.put(key,prams);
-           sequenceFiled.put(key,sequence);
+            sequenceFiled.put(key,sequence);
         }
 //        for (String key :sequenceFiled.keySet()){
 //            List objectMap =  (List) sequenceFiled.get(key);
@@ -152,8 +164,10 @@ public class FileTest {
 //        }
 //        return files;
     }
-    public static String BackUpStr(String value,int len){
-        String ret;
+    // 填充或者去除字符串
+    public static String BackUpStr(String value,List fieldInfo){
+        String ret,type = (String)fieldInfo.get(0),Fillsymbol  = (type.equals("TEXT") || type.equals("C")) ? " " : "0";
+        int len = Integer.valueOf((String)fieldInfo.get(1));
         int difference = value.length () - len;
         if (difference == 0)
             return value;
@@ -164,7 +178,7 @@ public class FileTest {
         ret = value;
         if(difference < 0){
             for (int i = difference; i < 0 ; i++ ){
-                ret += " ";
+                ret += Fillsymbol;
             }
             return ret;
         }
@@ -210,6 +224,27 @@ public class FileTest {
 
         String s = "000000000000025452";
         logger.info (num + (Long) processField(s,n));
+    }
+    // 生成文件时，填满对应字段之后
+    @Deprecated
+    public static String fieldFill(String value,List fieldinfo){
+        // 对字符串的填充
+        if(fieldinfo.get(0).equals("C") || fieldinfo.get(0).equals("TEXT")){
+            value = BackUpStr( value,fieldinfo);
+            return value;
+        }
+        // 对数字类型的填充
+        if(fieldinfo.get(0).equals("N") || fieldinfo.get(0).equals("A")){
+            String ton = value.replace(".","");
+            StringBuffer stringBuffer = new StringBuffer();
+            int len = Integer.valueOf((String) fieldinfo.get(1)),cha = ton.length()-len;
+            for (int i = cha; i < 0 ; i++ ){
+                stringBuffer.append("0");
+            }
+            stringBuffer.append(ton);
+            return stringBuffer.toString();
+        }
+        return null;
     }
 
 }
