@@ -16,6 +16,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import java.util.*;
@@ -398,4 +400,31 @@ public class FileTest {
         }
 //        logger.info (confirmFileConf.get ("02"));
     }
+
+    /**
+     * 不可行
+     * 解析XML只能按节点解析
+     */
+    @Test
+    public void testParaXML(){
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance ();
+        List<Map<String,String>> attrConf;Map<String,String> attrItem;
+
+        try {
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder ();
+
+
+            Document document = documentBuilder.parse (new FileInputStream (confirmedUrl));
+            logger.info (document.getDocumentElement ());
+        }catch (FileNotFoundException e){
+            logger.error (e);
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace ();
+        } catch (IOException e) {
+            e.printStackTrace ();
+        } catch (SAXException e) {
+            e.printStackTrace ();
+        }
+    }
+
 }
