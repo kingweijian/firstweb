@@ -151,7 +151,13 @@ public class FileTest {
         }
         return null;
     }
-
+    /**
+    * @Description: 参数：解析的数据，解析的文件信息，确认字段信息
+    * @Param: [filedinfo, fileconfig, confieFiled]
+    * @return: java.lang.String
+    * @Author: weijian
+    * @Date: 2020/5/4
+    */
     public static String generateConfirmedData(Map<String,String> filedinfo,  List<List> fileconfig, String[] confieFiled ){
         StringBuffer ret = new StringBuffer ();
         List<String> fileddeatil ;

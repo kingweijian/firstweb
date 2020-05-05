@@ -13,9 +13,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.concurrent.*;
 import java.util.regex.Pattern;
 
@@ -35,9 +34,12 @@ public class TestUnit {
     }
     @Test
     public void ThreadTestMore(){
-      for ( int i = 0 ; i <=5 ; i++){
-          new Thread(new ThreadMore()).start();
-      }
+//      for ( int i = 0 ; i <=5 ; i++){
+//          new Thread(new ThreadMore()).start();
+//      }
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat ("yyyyMMdd");
+        logger.info (simpleDateFormat.format (new Date ()));
+        Calendar c = Calendar.getInstance ();
 
     }
     @Test
