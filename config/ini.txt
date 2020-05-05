@@ -237,7 +237,7 @@
 48=N,16,2,利息税,InterestTax    -- 自己生成
 49=N,7,4,交易价格,TradingPrice  -- 自己生成 净值
 50=A,8,0,冻结截止日期,FreezingDeadline  --
-51=C,1,0,冻结原因,FrozenCause   -- 自己身处
+51=C,1,0,冻结原因,FrozenCause   -- 自己生成
 52=N,16,2,税金,Tax  -- 自己生成
 53=N,7,4,目标基金的单位净值,TargetNAV   --自己生成 取07文件的
 54=N,7,4,目标基金的价格,TargetFundPrice -- 取上面的值

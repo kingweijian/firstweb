@@ -337,8 +337,12 @@ public class FileUnit {
     * @Author: weijian
     * @Date: 2020/5/3
     */
-    public static String InterestAndVolumeByInterest(){
-        return null;
+    public static String InterestAndVolumeByInterest(PubRes res){
+        String ApplicationAmount = res.getToBeresolvedInfo ().get ("ApplicationAmount");
+        double amount = Double.valueOf (ApplicationAmount);
+        amount += amount * 0.01;
+
+        return String.valueOf (amount);
     }
     /**
     * @Description: 利息税 默认返回无
@@ -347,8 +351,8 @@ public class FileUnit {
     * @Author: weijian
     * @Date: 2020/5/3
     */
-    public static String InterestTax(){
-        return null;
+    public static String InterestTax(PubRes res){
+        return copyChar ("0",16);
     }
     /**
     * @Description: 冻结原因 基本为空
@@ -357,8 +361,8 @@ public class FileUnit {
     * @Author: weijian
     * @Date: 2020/5/3
     */
-    public static String FrozenCause(){
-        return null;
+    public static String FrozenCause(PubRes res){
+        return copyChar (" ",1);
     }
     /**
     * @Description: 税金 基本没有
@@ -367,8 +371,8 @@ public class FileUnit {
     * @Author: weijian
     * @Date: 2020/5/3
     */
-    public static String Tax(){
-        return null;
+    public static String Tax(PubRes res){
+        return copyChar ("0",16);
     }
     /**
     * @Description: 目标基金的单位净值 & 目标基金的价格 -自己生成取07文件的
@@ -377,7 +381,7 @@ public class FileUnit {
     * @Author: weijian
     * @Date: 2020/5/3
     */
-    public static String TargetNAVAndTargetFundPrice(){
+    public static String TargetNAVAndTargetFundPrice(PubRes res){
         return null;
     }
     /**
@@ -387,7 +391,7 @@ public class FileUnit {
     * @Author: weijian
     * @Date: 2020/5/3
     */
-    public static String CfmVolOfTargetFund(){
+    public static String CfmVolOfTargetFund(PubRes res){
         return null;
     }
     /**
@@ -397,8 +401,8 @@ public class FileUnit {
     * @Author: weijian
     * @Date: 2020/5/3
     */
-    public static String MinFee(){
-        return null;
+    public static String MinFee(PubRes res){
+        return copyChar ("0",10);
     }
     /**
     * @Description: 基本无
@@ -407,8 +411,8 @@ public class FileUnit {
     * @Author: weijian
     * @Date: 2020/5/3
     */
-    public static String OtherFee2(){
-        return null;
+    public static String OtherFee2(PubRes res){
+        return copyChar ("0",16);
     }
     
     /**
@@ -418,8 +422,8 @@ public class FileUnit {
     * @Author: weijian
     * @Date: 2020/5/3
     */
-    public static String TransferFee(){
-        return null;
+    public static String TransferFee(PubRes res){
+        return copyChar ("0",10);
     }
     /**
     * @Description: 数据明细标志， 看数据是否存库，如果存库的话就直接取数据库里面的数据，如果不存库，就没办法生成了
@@ -429,8 +433,8 @@ public class FileUnit {
     * @Author: weijian
     * @Date: 2020/5/3
     */
-    public static String DetailFlag(){
-        return null;
+    public static String DetailFlag(PubRes res){
+        return "0";
     }
     /**
     * @Description: 预约赎回标志,RedemptionInAdvanceFlag--自己生成产品到期，券商业务
@@ -439,7 +443,7 @@ public class FileUnit {
     * @Author: weijian
     * @Date: 2020/5/3
     */
-    public static String RedemptionInAdvanceFlag(){
+    public static String RedemptionInAdvanceFlag(PubRes res){
         return null;
     }
     /**
@@ -449,7 +453,7 @@ public class FileUnit {
     * @Author: weijian
     * @Date: 2020/5/3
     */
-    public static String FrozenMethod(){
+    public static String FrozenMethod(PubRes res){
         return null;
     }
     /**
@@ -671,8 +675,12 @@ public class FileUnit {
     * @Author: weijian
     * @Date: 2020/5/3
     */
-    public static String RaiseInterest(){
-        return null;
+    public static String RaiseInterest(PubRes res){
+        String ApplicationAmount = res.getToBeresolvedInfo ().get ("ApplicationAmount");
+        double amount = Double.valueOf (ApplicationAmount);
+        amount = amount * 0.01;
+
+        return String.valueOf (amount);
     }
     
     /**
