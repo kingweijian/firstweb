@@ -20,6 +20,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.*;
 
  enum DD {
@@ -41,11 +43,13 @@ public class FileTest {
     final static Logger logger = Logger.getLogger(FileTest.class);
 
     static Map<String,Map<String,List>> configs ;
+    // 字段信息
     static Map<String,List> sequenceFiled;
     static Map<String,Map<String,String>> fileinfo =  new HashMap<String,Map<String,String>>();
     static Map<String, List<Map<String,String>>> confirmFileConf = new HashMap<String, List<Map<String,String>>> ();
+    static Class<?>  pubResClass = null;
     @Before
-    public void init(){
+    public void init() throws ClassNotFoundException {
         Ini ini = null;
         try {
             ini = new Ini(new File(iniUrl));
@@ -53,6 +57,9 @@ public class FileTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        pubResClass = Class.forName ("general.FileUnit");
+
 
         parsaXML();
         Map<String,String> filedetail04 = new HashMap<String,String>();
@@ -125,18 +132,20 @@ public class FileTest {
 
 
         Map<String,String> filedinfo ;
+        // TA编码
+        String TANo = "65";
         // 获得需要解析的文件名字
         String fileName = fileConfig.get ("filenum");
         // 根据解析文件名字获取确认文件名字
-        String confirmName = getCofirmedFileName (fileName);
+        fileName = getCofirmedFileName (fileName);
         // 获取确认文件必填字段信息
-        Map<String,String> confirmInfo = confirmFileConf.get (confirmName).get (0);
+        Map<String,String> confirmInfo = confirmFileConf.get (fileName).get (0);
         // 获取确认文件必填字段信息
         String itmflag = confirmInfo.get ("itmflag");
         // 分割确认文件必填字段信息
         String[] confieFiled = itmflag.split ("\\|");
         // 获得 需要确认文件里面的字段信息
-        List<List> fileconfig = sequenceFiled.get(confirmName);
+        List<List> fileconfig = sequenceFiled.get(fileName);
 
         List<String> fileddeatil ;
 //        for (int i = 0; i < confieFiled.length; i++){
@@ -145,12 +154,25 @@ public class FileTest {
 //
 //        }
         // fileConent.length - 1 排除最后一行空行
+        PubRes res = new PubRes (
+                fileName,TANo,
+                "",null,
+                true,false,
+                fileName,"0");
         for (int i = 0; i < fileConent.length; i++){
             filedinfo = parsingLine (fileConent[i],fileinfo,fileConfig);
-            logger.info (generateConfirmedData(filedinfo,fileconfig,confieFiled));
+
+            logger.info (generateConfirmedData(filedinfo,fileconfig,confieFiled,res));
         }
         return null;
     }
+    @Test
+    public void TestFS() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        Method method = pubResClass.getMethod ("ShareRegisterDate", PubRes.class);
+        logger.info (method.invoke (pubResClass,new PubRes ()));
+
+    }
+
     /**
     * @Description: 参数：解析的数据，解析的文件信息，确认字段信息
     * @Param: [filedinfo, fileconfig, confieFiled]
@@ -158,22 +180,52 @@ public class FileTest {
     * @Author: weijian
     * @Date: 2020/5/4
     */
-    public static String generateConfirmedData(Map<String,String> filedinfo,  List<List> fileconfig, String[] confieFiled ){
+    public static String generateConfirmedData(
+            Map<String,String> filedinfo,  List<List> fileconfig,
+            String[] confieFiled, PubRes res ){
+        res.setToBeresolvedInfo (filedinfo);
         StringBuffer ret = new StringBuffer ();
         List<String> fileddeatil ;
         String key = null;
         for (int i = 0; i < confieFiled.length; i++){
             fileddeatil = fileconfig.get (i);
             key = fileddeatil.get (4);
-            logger.info (confieFiled[i] + " --- " +key + " --- " +filedinfo.get (key));
+
+            Method method = null;
+            try {
+                method = pubResClass.getMethod (key, PubRes.class);
+                if(method!=null){
+                    ret.append (String.valueOf (method.invoke (pubResClass,res)));
+                    logger.info ("确认字段 ： "+fileddeatil.get (3)+" "+confieFiled[i] + " --- " +key + " --- " +method.invoke (method,res));
+                    continue;
+                }else {
+                    ret.append (filedinfo.get (key));
+                    continue;
+                }
+            } catch (IllegalAccessException e) {
+                logger.error ("error "+key,e);
+                e.printStackTrace ();
+            } catch (InvocationTargetException e) {
+                logger.error ("error "+key,e);
+
+            }catch (NoSuchMethodException e) {
+                ret.append (filedinfo.get (key));
+                continue;
+            }
+//                logger.info ("确认字段 ： "+fileddeatil.get (3)+" "+confieFiled[i] + " --- " +key + " --- " +ret.toString ());
+
+//            logger.info ("申请字段 ： "+fileddeatil.get (3)+" "+confieFiled[i] + " --- " +key + " --- " +filedinfo.get (key));
             // 判断如果是必填的值而且在解析的字段里面有数据，那么就拿
             if (confieFiled[i].equals ("Y") && filedinfo.containsKey (key)){
-                ret.append (filedinfo.get (key));
+
+                    ret.append (filedinfo.get (key));
+//                logger.info ("确认字段 ： "+fileddeatil.get (3)+" "+confieFiled[i] + " --- " +key + " --- " +ret.toString ());
                 continue;
             }
 
             if(confieFiled[i].equals ("N") ||  !filedinfo.containsKey (key)){
                 ret.append (FillStr (fileddeatil.get (0),Integer.valueOf (fileddeatil.get (1))));
+//                logger.info ("确认字段 ： "+fileddeatil.get (3)+" "+confieFiled[i] + " --- " +key + " --- " +ret.toString ());
                 continue;
             }
 
@@ -197,7 +249,7 @@ public class FileTest {
             return "44";
         }
 
-        return null;
+        return fileName;
     }
 
     @Test
@@ -205,7 +257,7 @@ public class FileTest {
         //读取文件
 
         // 获得文件关键字段
-        String filenum = "01";
+        String filenum = "03";
         String value = "586586                                                                                                                  568856                        6568586              20200318000000000463870113644636343871                 200317test1                                                                                                             2020031814521721000008656                          0126347              0108A00002795    387      001                                                                                                         3652259587433654                                                                                                   0000000012345678912             387                            200317test1                                                                0000000001                           招商银行13                                                  3652259587433654                     00000000   8866                                                         20991231                5                                                                                                                                                                   000000000000000000 8                                              0000000000000000                                                             2                                                                                                          \n"+
                        "586587                                                                                                                  568856                        6568586              20200318000000000463870113644636343871                 200317test1                                                                                                             2020031814521721000008656                          0126347              0108A00002795    387      001                                                                                                         3652259587433654                                                                                                   0000000012345678912             387                            200317test1                                                                0000000001                           招商银行13                                                  3652259587433654                     00000000   8866                                                         20991231                5                                                                                                                                                                   000000000000000000 8                                              0000000000000000                                                             2                                                                                                          \n"  ;
         String value01 = "湖北省武汉市                                                                                                                                                               bbbbbbbbyyy000cccccccc  1JGZyyycccccccc                个人yyydddddddd                                                                                                         bbbbbbbb1500001999999                                                   JYZHyyyffffffff  yyy      zzz                                                                                                 19990829Qyyycccccccc       yyy 01 ASP@139.C0M                                                     02                       0000000013489883848             yyy                            个人1               0                    Zyyyeeeeeeee                      0000000001                           个人yyydddddddd                                             ZJZH01                               00000000156yyy                                                                                                                                                                                                                                                      000000000000000000                                                0000000000000000                                                             2                                                                                                                 \n"
@@ -218,7 +270,7 @@ public class FileTest {
 
 //        logger.info (parsingLine (value03,fileconfig,fileinfo.get (filenum)));
 
-        generateConfirmedFileContext(value01.split ("\n"),fileconfig,fileinfo.get (filenum));
+        generateConfirmedFileContext(value03.split ("\n"),fileconfig,fileinfo.get (filenum));
 
     }
     @Test

@@ -14,6 +14,7 @@ public class PubRes {
     private String filename;
     //TA编码
     private String TANO;
+    // 是否需要生成
     private String isgrent;
     // 解析的 申请 文件的值
     private Map<String,String> toBeresolvedInfo;
@@ -22,18 +23,21 @@ public class PubRes {
     // 是否是TA发起业务标识
     private boolean isTAFlag = false;
     // 文件代码
-    private String filedCode = "";
+    private String fileCode = "";
     // 转入/转出标识
-    private String  transferDirection = "";
+        private String  transferDirection = "";
 
-    public PubRes(String filename, String TANO, String isgrent, Map<String, String> toBeresolvedInfo, boolean isSuccess, boolean isTAFlag, String filedCode, String transferDirection) {
+    public PubRes() {
+    }
+
+    public PubRes(String filename, String TANO, String isgrent, Map<String, String> toBeresolvedInfo, boolean isSuccess, boolean isTAFlag, String fileCode, String transferDirection) {
         this.filename = filename;
         this.TANO = TANO;
         this.isgrent = isgrent;
         this.toBeresolvedInfo = toBeresolvedInfo;
         this.isSuccess = isSuccess;
         this.isTAFlag = isTAFlag;
-        this.filedCode = filedCode;
+        this.fileCode = fileCode;
      this.transferDirection = transferDirection;
     }
 
@@ -45,12 +49,12 @@ public class PubRes {
         this.transferDirection = transferDirection;
     }
 
-    public String getFiledCode() {
-        return filedCode;
+    public String getFileCode() {
+        return fileCode;
     }
 
-    public void setFiledCode(String filedCode) {
-        this.filedCode = filedCode;
+    public void setFileCode(String fileCode) {
+        this.fileCode = fileCode;
     }
 
     public boolean isTAFlag() {

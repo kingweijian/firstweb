@@ -194,7 +194,7 @@
 5=N,16,2,确认金额,ConfirmedAmount -- ApplicationAmount  有失败情况
 6=C,6,0,基金代码,FundCode           --
 7=C,1,0,巨额赎回处理标志,LargeRedemptionFlag --
-8=A,8,0,交易发生日期,TransactionDate    --
+8=A,8,0,交易发生f日期,TransactionDate    --
 9=A,6,0,交易发生时间,Transactiontime    --
 10=C,4,0,返回代码,ReturnCode            -- 自己生成
 11=C,17,0,投资人基金交易帐号,TransactionAccountID   --
