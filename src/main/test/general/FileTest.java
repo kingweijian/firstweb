@@ -198,9 +198,6 @@ public class FileTest {
                     ret.append (String.valueOf (method.invoke (pubResClass,res)));
                     logger.info ("确认字段 ： "+fileddeatil.get (3)+" "+confieFiled[i] + " --- " +key + " --- " +method.invoke (method,res));
                     continue;
-                }else {
-                    ret.append (filedinfo.get (key));
-                    continue;
                 }
             } catch (IllegalAccessException e) {
                 logger.error ("error "+key,e);
@@ -209,8 +206,7 @@ public class FileTest {
                 logger.error ("error "+key,e);
 
             }catch (NoSuchMethodException e) {
-                ret.append (filedinfo.get (key));
-                continue;
+               logger.error ("error "+key,e);
             }
 //                logger.info ("确认字段 ： "+fileddeatil.get (3)+" "+confieFiled[i] + " --- " +key + " --- " +ret.toString ());
 

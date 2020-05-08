@@ -1,5 +1,8 @@
 package general;
 
+import org.apache.log4j.Logger;
+import org.junit.Test;
+
 import javax.swing.plaf.synth.SynthTextAreaUI;
 import java.security.PublicKey;
 import java.text.SimpleDateFormat;
@@ -14,6 +17,7 @@ import java.util.List;
  * Version 1.0
  */
 public class FileUnit {
+    public static final Logger logger = Logger.getLogger (FileUnit.class);
     public static int count =0;
     public final static String ID = getNumber();
     public static SimpleDateFormat simpleDateFormat = new SimpleDateFormat ("yyyyMMdd");
@@ -341,8 +345,8 @@ public class FileUnit {
         String ApplicationAmount = res.getToBeresolvedInfo ().get ("ApplicationAmount");
         double amount = Double.valueOf (ApplicationAmount);
         amount += amount * 0.01;
-
-        return copyChar ("0",16,String.valueOf (amount));
+        String ret = DoubleToString (amount,2);
+        return copyChar ("0",16,ret)+ret;
     }
     /**
     * @Description: 利息税 默认返回无
@@ -552,8 +556,9 @@ public class FileUnit {
         String LargeRedemptionFlag = res.getToBeresolvedInfo ().get ("LargeRedemptionFlag");
         if(LargeRedemptionFlag.equals ("0")){
             double amount = Double.valueOf (res.getToBeresolvedInfo ().get ("ConfirmedAmount"));
-            amount = amount * 0.01;
-            return copyChar ("0",16,String.valueOf (amount));
+            amount += amount * 0.01;
+            String ret = DoubleToString (amount,2);
+            return copyChar ("0",16,ret)+ret;
         }
         return copyChar ("0",16);
     }
@@ -693,10 +698,13 @@ public class FileUnit {
     */
     public static String RaiseInterest(PubRes res){
         String ApplicationAmount = res.getToBeresolvedInfo ().get ("ApplicationAmount");
+        ApplicationAmount = ApplicationAmount.substring (0,ApplicationAmount.length ()-2) + "." + ApplicationAmount.substring (ApplicationAmount.length ()-2,ApplicationAmount.length ());
         double amount = Double.valueOf (ApplicationAmount);
-        amount = amount * 0.01;
-
-        return String.valueOf (amount);
+        logger.info (amount);
+        amount += amount * 0.01;
+        logger.info (amount);
+        String ret = DoubleToString (amount,2);
+        return copyChar ("0",16,ret)+ret;
     }
     
     /**
@@ -727,7 +735,7 @@ public class FileUnit {
     * @Date: 2020/5/3
     */
     public static String FundVolBalance(PubRes res){
-        return null;
+        return copyChar ("0",16);
     }
     /**
     * @Description: 清算资金经清算人划出日 待确认
@@ -737,7 +745,7 @@ public class FileUnit {
     * @Date: 2020/5/3
     */
     public static String TransferDateThroughClearingAgency(PubRes res){
-        return null;
+        return copyChar ("0",8);
     }
     /**
     * @Description: 基金冻结总份数 待确认
@@ -747,7 +755,7 @@ public class FileUnit {
     * @Date: 2020/5/3
     */
     public static String TotalFrozenVol(PubRes res){
-        return null;
+        return copyChar ("0",16);
     }
     /**
     * @Description: 冻结金额 冻结份数 * 当天净值
@@ -757,7 +765,7 @@ public class FileUnit {
     * @Date: 2020/5/3
     */
     public static String FrozenBalance(PubRes res){
-        return null;
+        return copyChar ("0",16);
     }
 
     
@@ -814,6 +822,31 @@ public class FileUnit {
 
     public static Integer StringforInt(String value){
         return Integer.valueOf (value);
+    }
+
+    public static String DoubleToString(Double val, int bit){
+       String s = String.valueOf (val);
+       if(bit > s.length () || s.startsWith ("\\.")) return null;
+//       int position = val.indexOf (".");
+       String[] str = s.split ("\\.")[1].split ("");
+       String ret = s.split ("\\.")[0];
+       if(str.length<=bit) return s.replaceAll ("\\.","")+"0";
+       for(int i = 0; i < str.length; i++){
+           if (i+1 == bit){
+               int c = Integer.valueOf (str[i+1]);
+               ret += c > 5 ? Integer.valueOf (str[i])+1 : str[i];
+               break;
+           }
+           ret += str[i];
+       }
+        logger.info (ret);
+
+       return ret;
+    }
+
+    @Test
+    public void TestStringstr(){
+       logger.info (DoubleToString ( 10100.0,1));
     }
 
     public static String copyChar(String val, int len){
