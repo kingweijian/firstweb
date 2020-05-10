@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="GB2312"?>
+<ZDCSW_ITMFLAG  filenum = '22'  name="ZDCSW_ITMFLAG"   description="中央数据交换平台">
+  <file filetype="01" description="[申请类]账户申请" businesscodestart="445" transnum="6">
+			<trans businesscode="001"   businesname="账户开户"         itmflag="N|N|N|N|Y|Y|Y|Y|Y|Y|Y|N|Y|Y|Y|Y|Y|Y|N|N|N|N|N|Y|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N"/>
+			<trans businesscode="002"   businesname="基金账户销户"     itmflag="N|N|N|N|Y|Y|Y|Y|Y|Y|Y|N|Y|Y|Y|Y|Y|Y|N|N|N|N|N|Y|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N"/>                                           
+			<trans businesscode="003"   businesname="账户信息修改"     itmflag="N|N|N|N|Y|Y|Y|Y|Y|Y|Y|N|Y|Y|Y|Y|Y|Y|N|N|N|N|N|Y|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N"/>                                               
+			<trans businesscode="008"   businesname="增加交易账户"     itmflag="N|N|N|N|Y|Y|Y|Y|Y|Y|Y|N|N|N|N|Y|Y|Y|N|N|N|N|N|Y|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N"/>                                                   
+			<trans businesscode="009"   businesname="撤销交易账户"     itmflag="N|N|N|N|Y|Y|Y|Y|Y|Y|Y|N|N|N|N|Y|Y|Y|N|N|N|N|N|Y|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N"/>                                                     
+			<trans businesscode="058"   businesname="变更交易账号"     itmflag="N|N|N|N|Y|N|N|N|Y|Y|Y|N|N|N|N|Y|Y|Y|N|N|N|N|N|Y|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|Y|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N"/>                                     
+  </file>
+  <file filetype="03" description="[申请类]交易申请" businesscodestart="104" transnum="13">
+			<trans businesscode="020"   businesname="认购"             itmflag="Y|Y|N|Y|Y|Y|Y|N|Y|Y|Y|Y|N|Y|Y|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N"/>                                             
+			<trans businesscode="022"   businesname="申购"             itmflag="Y|Y|N|Y|Y|Y|Y|N|Y|Y|Y|Y|N|Y|Y|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|Y|N|N"/>                                             
+			<trans businesscode="039"   businesname="定期定额申购"     itmflag="Y|Y|N|Y|Y|Y|Y|N|Y|Y|Y|Y|N|Y|Y|Y|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N"/>                                             
+			<trans businesscode="024"   businesname="赎回"             itmflag="Y|Y|Y|Y|Y|Y|Y|Y|N|Y|Y|Y|N|Y|Y|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|Y|N|N"/>                                             
+			<trans businesscode="026"   businesname="转托管"           itmflag="Y|Y|N|Y|Y|Y|Y|Y|N|Y|Y|Y|N|Y|Y|Y|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N"/>                                             
+			<trans businesscode="027"   businesname="转托管转入"       itmflag="Y|Y|N|Y|Y|Y|Y|Y|N|Y|Y|Y|N|Y|Y|Y|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N"/>                                             
+			<trans businesscode="028"   businesname="转托管转出"       itmflag="Y|Y|N|Y|Y|Y|Y|Y|N|Y|Y|Y|N|Y|Y|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N"/>                                             
+			<trans businesscode="029"   businesname="设置分红方式"     itmflag="Y|Y|N|Y|Y|Y|Y|N|N|Y|Y|Y|N|Y|Y|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|Y|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N"/>                                             
+			<trans businesscode="036"   businesname="基金转换"         itmflag="Y|Y|Y|Y|Y|Y|Y|Y|N|Y|Y|Y|N|Y|Y|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|Y|N|Y|N|N|N|N|N|N|N|N|N|N|N|Y|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|Y|N|N"/>                                             
+			<trans businesscode="059"   businesname="定投申购注册"     itmflag="Y|Y|N|Y|Y|Y|Y|N|Y|Y|Y|Y|N|Y|Y|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N"/>                                             
+			<trans businesscode="060"   businesname="定投申购注销"     itmflag="Y|Y|N|Y|Y|Y|Y|N|Y|Y|Y|Y|N|Y|Y|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N"/>                                             
+			<trans businesscode="088"   businesname="基金质押"         itmflag="Y|Y|N|Y|Y|Y|Y|Y|N|Y|Y|Y|N|Y|Y|Y|Y|N|Y|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|Y|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N"/> 
+			<trans businesscode="098"   businesname="快速过户"         itmflag="Y|Y|N|Y|Y|Y|Y|Y|N|Y|Y|Y|N|Y|Y|Y|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|Y|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N"/> 
+  </file>                                                                                                                               
+  <file filetype="13" description="[申请类]业务申请汇总" businesscodestart="-1" transnum="1">                   
+			<trans businesscode="***"   businesname="业务申请汇总"     itmflag="Y|Y|Y|Y|Y|Y|Y"/>                                             
+  </file>                                                                                                                               
+  <file filetype="23" description="[申请类]其它类申请文件" businesscodestart="239" transnum="3">
+			<trans businesscode="067"   businesname="基金联名卡开通"   itmflag="Y|N|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|N|N|Y|Y|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N"/>     
+			<trans businesscode="080"   businesname="确权"             itmflag="Y|N|Y|Y|N|N|N|N|N|N|Y|N|Y|N|N|N|Y|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|Y"/>  
+			<trans businesscode="070"   businesname="地区编号变更"     itmflag="N|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N"/>                                          
+  </file>
+  <file filetype="02" description="[确认类]账户确认" businesscodestart="63" transnum="6">
+			<trans businesscode="101"   businesname="账户开户"         itmflag="Y|Y|Y|Y|Y|Y|Y|N|N|Y|Y|Y|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N"/>                                             
+			<trans businesscode="102"   businesname="基金账户销户"     itmflag="Y|Y|Y|Y|Y|Y|Y|N|N|Y|Y|Y|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N"/>                                             
+			<trans businesscode="103"   businesname="账户信息修改"     itmflag="Y|Y|Y|Y|Y|Y|Y|N|N|Y|Y|Y|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N"/>                                             
+			<trans businesscode="108"   businesname="增加交易账户"     itmflag="Y|Y|Y|Y|Y|Y|Y|N|N|Y|Y|Y|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N"/>                                             
+			<trans businesscode="109"   businesname="撤销交易账户"     itmflag="Y|Y|Y|Y|Y|Y|Y|N|N|Y|Y|Y|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N"/>                                             
+			<trans businesscode="158"   businesname="变更交易账号"     itmflag="Y|Y|Y|Y|Y|Y|Y|N|N|Y|Y|Y|N|N|N|N|N|N|N|Y|Y|N|N|N|N|N|N"/>                                                                                      
+  </file>
+  <file filetype="04" description="[确认类]交易确认" businesscodestart="151" transnum="23">
+			<trans businesscode="120"   businesname="认购"             itmflag="Y|Y|Y|N|Y|Y|N|Y|Y|Y|Y|Y|N|Y|Y|Y|Y|N|N|N|Y|Y|N|N|Y|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N"/>                                             
+			<trans businesscode="130"   businesname="认购结果"         itmflag="Y|Y|Y|Y|Y|Y|N|Y|Y|Y|Y|Y|N|Y|Y|Y|Y|N|N|N|Y|Y|Y|Y|Y|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|Y|Y|Y|N|N|N|N|N|N|N|N|N|N|Y|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|Y|N|N"/>                                             
+			<trans businesscode="122"   businesname="申购"             itmflag="Y|Y|Y|Y|Y|Y|N|Y|Y|Y|Y|Y|N|Y|Y|Y|Y|N|N|N|Y|Y|Y|Y|Y|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|Y|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N"/>                                             
+			<trans businesscode="139"   businesname="定期定额申购"     itmflag="Y|Y|Y|Y|Y|Y|N|Y|Y|Y|Y|Y|N|Y|Y|Y|Y|N|N|N|Y|Y|Y|Y|Y|Y|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|Y|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N"/>                                             
+			<trans businesscode="124"   businesname="赎回"             itmflag="Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|N|Y|Y|Y|Y|N|N|Y|Y|Y|Y|Y|Y|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|Y|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|Y|Y|N|N|N|N|Y|Y|Y|N|N|N|N|N|N|N|N"/>                                             
+			<trans businesscode="126"   businesname="转托管"           itmflag="Y|Y|N|Y|N|Y|N|Y|Y|Y|Y|Y|Y|N|Y|Y|Y|N|N|N|Y|Y|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N"/>                                             
+			<trans businesscode="127"   businesname="转托管转入"       itmflag="Y|Y|N|Y|N|Y|N|Y|Y|Y|Y|Y|Y|N|Y|Y|Y|N|N|N|Y|Y|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N"/>                                             
+			<trans businesscode="128"   businesname="转托管转出"       itmflag="Y|Y|N|Y|N|Y|N|Y|Y|Y|Y|Y|Y|N|Y|Y|Y|N|N|N|Y|Y|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N"/>                                             
+			<trans businesscode="129"   businesname="设置分红方式"     itmflag="Y|Y|N|N|N|Y|N|Y|Y|Y|Y|Y|N|N|Y|Y|Y|N|N|N|Y|Y|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N"/>                                             
+			<trans businesscode="131"   businesname="份额冻结"         itmflag="N|Y|N|Y|N|Y|N|Y|Y|Y|Y|Y|N|N|Y|Y|Y|N|N|N|Y|Y|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N"/>                                             
+			<trans businesscode="132"   businesname="份额解冻"         itmflag="N|Y|N|Y|N|Y|N|Y|Y|Y|Y|Y|N|N|Y|Y|Y|N|N|N|Y|Y|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N"/>  
+			<trans businesscode="133"   businesname="非交易过户"       itmflag="N|Y|N|Y|N|Y|N|Y|Y|Y|Y|Y|N|N|Y|Y|Y|N|N|N|Y|Y|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N"/>  
+			<trans businesscode="134"   businesname="非交易过户入"     itmflag="N|Y|N|Y|N|Y|N|Y|Y|Y|Y|Y|N|N|Y|Y|Y|N|N|N|Y|Y|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N"/> 
+			<trans businesscode="135"   businesname="非交易过户出"     itmflag="N|Y|N|Y|N|Y|N|Y|Y|Y|Y|Y|N|N|Y|Y|Y|N|N|N|Y|Y|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N"/> 
+			<trans businesscode="136"   businesname="基金转换"         itmflag="Y|Y|N|Y|N|Y|Y|Y|Y|Y|Y|Y|Y|N|Y|Y|Y|Y|N|N|Y|Y|Y|Y|Y|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|Y|N|Y|N|N|N|Y|N|Y|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|Y|Y|Y|Y|N|N|N|N|N|N|N|N|Y|Y|N|N|N|N|N"/> 
+			<trans businesscode="142"   businesname="强制赎回"         itmflag="N|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|N|Y|Y|Y|Y|N|N|Y|Y|Y|Y|Y|Y|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|Y|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|Y|Y|N|N|N|N|Y|Y|Y|N|N|N|N|N|N|N|N"/> 
+			<trans businesscode="144"   businesname="强制调增"         itmflag="N|Y|Y|Y|N|Y|N|N|N|Y|Y|Y|N|N|Y|Y|Y|N|N|N|Y|Y|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N"/> 
+			<trans businesscode="145"   businesname="强制调减"         itmflag="N|Y|Y|Y|N|Y|N|N|N|Y|Y|Y|N|N|Y|Y|Y|N|N|N|Y|Y|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N"/> 
+			<trans businesscode="149"   businesname="募集失败"         itmflag="Y|Y|Y|N|Y|Y|N|Y|Y|N|Y|Y|N|Y|Y|Y|N|N|N|N|Y|Y|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|Y|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|Y|N|N"/> 
+			<trans businesscode="159"   businesname="定投申购注册"     itmflag="Y|Y|Y|N|N|Y|N|Y|Y|Y|Y|Y|N|Y|Y|Y|N|Y|N|N|Y|Y|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N"/> 
+			<trans businesscode="160"   businesname="定投申购注销"     itmflag="Y|Y|Y|N|N|Y|N|Y|Y|Y|Y|Y|N|Y|Y|Y|N|Y|N|N|Y|Y|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N"/> 
+			<trans businesscode="188"   businesname="基金质押"         itmflag="Y|Y|Y|Y|N|Y|N|Y|Y|Y|Y|Y|Y|N|Y|Y|N|N|N|N|Y|N|N|N|N|Y|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N"/>
+			<trans businesscode="198"   businesname="快速过户"         itmflag="Y|Y|Y|Y|N|Y|N|Y|Y|Y|Y|Y|Y|N|Y|Y|N|N|N|N|Y|N|N|N|N|Y|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N"/> 
+  </file>                                                       
+  <file filetype="05" description="[确认类]份额对账" businesscodestart="-1" transnum="1">
+			<trans businesscode="***"   businesname="份额对账"         itmflag="Y|Y|Y|Y|Y|Y|Y|N|Y|N|N|Y|Y|N|N|N|N|N|N|N"/>                                             
+  </file>
+  <file filetype="06" description="[确认类]基金分红" businesscodestart="-1" transnum="1">
+			<trans businesscode="***"   businesname="基金分红"         itmflag="Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|N|Y|Y|Y|Y|N|N|Y|N|N|N|N|Y|N|N|Y|Y|N|Y|N|Y|N|Y|Y"/>                                             
+  </file>
+  <file filetype="09" description="[确认类]红利汇总" businesscodestart="-1" transnum="1">
+			<trans businesscode="***"   businesname="红利汇总"     itmflag="Y|Y|Y|Y|Y|Y|Y|Y|Y|Y"/>                                             
+  </file>
+  <file filetype="12" description="[确认类]确认汇总" businesscodestart="-1" transnum="1">
+			<trans businesscode="***"   businesname="确认汇总"     itmflag="Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y"/>                                             
+  </file>
+  <file filetype="24" description="[确认类]其它确认" businesscodestart="87" transnum="2">
+			<trans businesscode="180"   businesname="确权"         itmflag="Y|N|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|N|Y|Y|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N"/>       
+			<trans businesscode="169"   businesname="积分"         itmflag="N|N|Y|N|N|N|N|N|Y|N|N|N|Y|Y|Y|N|N|N|Y|N|N|N|N|N|N|N|N|N|N|N|N|Y|Y|Y|Y|Y|N|N|N|N"/>                                        
+  </file>
+  <file filetype="07" description="[信息类]基金行情" businesscodestart="-1" transnum="1">
+			<trans businesscode="***"   businesname="基金行情"     itmflag="Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N"/>                                            
+  </file>
+  <file filetype="08" description="[信息类]公告" businesscodestart="-1" transnum="1">
+			<trans businesscode="***"   businesname="公告"         itmflag="Y|Y|Y|Y|Y|Y"/>                                           
+  </file>
+  <file filetype="21" description="[信息类]结算席位" businesscodestart="-1" transnum="1">
+			<trans businesscode="***"   businesname="结算席位"     itmflag="N|N|Y|Y|Y"/>                                             
+  </file>
+  <file filetype="10" description="[资金类]日交割汇总" businesscodestart="-1" transnum="1">
+			<trans businesscode="***"   businesname="日交割汇总"   itmflag="Y|Y|Y|Y|Y|Y|Y|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N|N"/>                                             
+  </file>
+  <file filetype="25" description="[资金类]资金清算" businesscodestart="101" transnum="9">
+			<trans businesscode="120"   businesname="认购"         itmflag="Y|Y|Y|Y|N|N|Y|Y|N|N|Y|Y|Y|Y|N|Y|Y|Y"/>      
+			<trans businesscode="130"   businesname="认购结果"     itmflag="Y|Y|Y|Y|N|N|Y|Y|N|N|Y|Y|Y|Y|N|Y|Y|Y"/>
+			<trans businesscode="149"   businesname="募集失败"     itmflag="Y|Y|Y|Y|N|N|Y|Y|N|N|Y|Y|Y|Y|N|Y|Y|Y"/>
+			<trans businesscode="122"   businesname="申购"         itmflag="Y|Y|Y|Y|N|N|Y|Y|N|N|Y|Y|Y|Y|N|Y|Y|Y"/>
+			<trans businesscode="139"   businesname="定期定额申购" itmflag="Y|Y|Y|Y|N|N|Y|Y|N|N|Y|Y|Y|Y|N|Y|Y|Y"/>
+			<trans businesscode="124"   businesname="赎回"         itmflag="Y|Y|Y|Y|N|N|Y|Y|N|N|Y|Y|Y|Y|N|Y|Y|Y"/>
+			<trans businesscode="142"   businesname="强制赎回"     itmflag="Y|Y|Y|Y|N|N|Y|Y|N|N|Y|Y|Y|Y|N|Y|Y|Y"/> 
+			<trans businesscode="143"   businesname="红利发放"     itmflag="Y|Y|Y|Y|N|N|Y|Y|N|N|Y|Y|Y|Y|N|Y|Y|Y"/> 
+			<trans businesscode="136"   businesname="基金转换"     itmflag="Y|Y|Y|Y|N|N|Y|Y|N|N|Y|Y|Y|Y|N|Y|Y|Y"/>
+  </file>
+  <file filetype="11" description="[汇总类]TA发起申请汇总" businesscodestart="-1" transnum="1">
+			<trans businesscode="***"   businesname="TA发起申请汇总"  itmflag="Y|Y|Y|Y|Y|Y|Y"/>                                          
+  </file>
+  <file filetype="C1" description="[参数类]基金参数" businesscodestart="-1" transnum="1">
+			<trans businesscode="***"   businesname="基金参数"   itmflag="Y|Y|Y|Y|Y|N|Y|N|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|N|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|N|Y|N|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|N|Y|N|Y|Y"/>                                             
+  </file>
+  <file filetype="C2" description="[参数类]代理关系" businesscodestart="-1" transnum="1">
+			<trans businesscode="***"   businesname="代理关系"   itmflag="Y|Y|Y|Y|N|N|Y|Y|Y|N|N|Y|Y|N|Y|Y"/>                                            
+  </file>
+  <file filetype="C3" description="[参数类]转换关系" businesscodestart="-1" transnum="1">
+			<trans businesscode="***"   businesname="转换关系"   itmflag="Y|Y|Y|Y|Y|Y|Y|Y|Y|N|N|Y|N|Y|Y"/>                                            
+  </file>
+  <file filetype="C4" description="[参数类]分红方案" businesscodestart="-1" transnum="1">
+			<trans businesscode="***"   businesname="分红方案"   itmflag="Y|Y|Y|N|N|Y|N|Y|N|N|Y|N|Y|N|Y"/>                                         
+  </file>
+  <file filetype="C5" description="[参数类]基金费率" businesscodestart="-1" transnum="1">
+			<trans businesscode="***"   businesname="基金费率"   itmflag="Y|Y|Y|N|N|Y|N|Y|Y|Y|Y|N|N|N|N|N|N|N|N|N|Y|Y|N|N|Y|N|Y|Y"/>                               
+  </file>
+</ZDCSW_ITMFLAG>

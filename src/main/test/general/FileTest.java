@@ -37,8 +37,9 @@ import java.util.*;
     }
 }
 public class FileTest {
-    final static String iniUrl = "/Users/weijian/Documents/unitfile/OFD_888.ini";
-    final static String confirmedUrl = "/Users/weijian/Documents/unitfile/Required.xml";;
+     final static String BASURL = Thread.currentThread().getContextClassLoader().getResource("").getPath();
+    final static String iniUrl = BASURL +"/OFD_888.ini";
+    final static String confirmedUrl = BASURL+"/Required.xml";
 //    final static String filename = "D:/OFD_888.ini";
     final static Logger logger = Logger.getLogger(FileTest.class);
 
@@ -50,6 +51,7 @@ public class FileTest {
     static Class<?>  pubResClass = null;
     @Before
     public void init() throws ClassNotFoundException {
+        logger.info ("BASEURL -- " + BASURL);
         Ini ini = null;
         try {
             ini = new Ini(new File(iniUrl));
@@ -271,7 +273,7 @@ public class FileTest {
     }
     @Test
     public  void testFileIni(){
-        String filename = "D:/OFD_888.ini";
+//        String filename = "D:/OFD_888.ini";
 
 
 //            Ini ini = new Ini(new File(filename));
