@@ -14,14 +14,11 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
  enum DD {
@@ -38,24 +35,44 @@ import java.util.*;
 }
 public class FileTest {
      final static String BASURL = Thread.currentThread().getContextClassLoader().getResource("").getPath();
-    final static String iniUrl = BASURL +"/OFD_888.ini";
-    final static String confirmedUrl = BASURL+"/Required.xml";
-//    final static String filename = "D:/OFD_888.ini";
-    final static Logger logger = Logger.getLogger(FileTest.class);
 
-    static Map<String,Map<String,List>> configs ;
+     final static String FILEEND = "OFDCFEND";
+
+     final static String TA_TO_SALE_DIR = BASURL + "/TA_TO_SALE/###/@@/YYYYMMDD";
+     final static String  SALE_TO_TA_DIR = BASURL + "/SALE_TO_TA/###/@@/YYYYMMDD";
+
+     final static String iniUrl = BASURL +"/OFD_888.ini";
+     final static String confirmedUrl = BASURL+"/Required.xml";
+     final static String taFileConfig = BASURL+"/TAFileConfig.ini";
+
+     static String[] ta_to_sale_fileName=new String[9];
+     static String[] ta_to_sale_fileName_21=new String[9];
+     static String[] ta_to_sale_fileName_20=new String[9];
+
+     static String[] sale_to_ta_fileName=new String[7];
+     static String[] sale_to_ta_fileName_21=new String[7];
+     static String[] sale_to_ta_fileName_20=new String[7];
+
+
+//    final static String filename = "D:/OFD_888.ini";
+     final static Logger logger = Logger.getLogger(FileTest.class);
+
+     static Map<String,Map<String,List>> configs ;
     // 字段信息
-    static Map<String,List> sequenceFiled;
-    static Map<String,Map<String,String>> fileinfo =  new HashMap<String,Map<String,String>>();
-    static Map<String, List<Map<String,String>>> confirmFileConf = new HashMap<String, List<Map<String,String>>> ();
-    static Class<?>  pubResClass = null;
+     static Map<String,List> sequenceFiled;
+     static Map<String,List> taFileConfigMap;
+     static Map<String,Map<String,String>> fileinfo =  new HashMap<String,Map<String,String>>();
+     static Map<String, List<Map<String,String>>> confirmFileConf = new HashMap<String, List<Map<String,String>>> ();
+     static Class<?>  pubResClass = null;
     @Before
     public void init() throws ClassNotFoundException {
         logger.info ("BASEURL -- " + BASURL);
         Ini ini = null;
         try {
             ini = new Ini(new File(iniUrl));
-            initConfigFile(ini);
+            sequenceFiled = initConfigFile(ini,true);
+            ini = new Ini (new File (taFileConfig));
+            taFileConfigMap = initConfigFile (ini,false);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -91,9 +108,126 @@ public class FileTest {
         filedetail03.put ("size","74");
 
         fileinfo.put("03",filedetail03);
+
+        ta_to_sale_fileName[0] = "02";
+        ta_to_sale_fileName[1] = "04";
+        ta_to_sale_fileName[2] = "05";
+        ta_to_sale_fileName[3] = "06";
+        ta_to_sale_fileName[4] = "07";
+        ta_to_sale_fileName[5] = "26";
+        ta_to_sale_fileName[6] = "32";
+        ta_to_sale_fileName[7] = "44";
+        ta_to_sale_fileName[8] = "R2";
+
+        sale_to_ta_fileName[0] = "01";
+        sale_to_ta_fileName[1] = "03";
+        sale_to_ta_fileName[2] = "31";
+        sale_to_ta_fileName[3] = "43";
+        sale_to_ta_fileName[4] = "R1";
+        sale_to_ta_fileName[5] = "13";
+        sale_to_ta_fileName[6] = "23";
+
+        for (int i = 0; i < ta_to_sale_fileName.length; i++){
+            ta_to_sale_fileName_21[i] = ta_to_sale_fileName[i] + "_21";
+            ta_to_sale_fileName_20[i] = ta_to_sale_fileName[i] + "_20";
+        }
+
+        for (int i = 0; i < sale_to_ta_fileName.length; i++){
+            sale_to_ta_fileName_21[i] = sale_to_ta_fileName[i] + "_21";
+            sale_to_ta_fileName_20[i] = sale_to_ta_fileName[i] + "_20";
+        }
+
     }
+
+    public static void checkFileToNew(File file,boolean isDIR){
+        if (!file.exists () && isDIR){
+            file.mkdir ();
+        }
+    }
+
+    public static boolean NewAirFileForConfirm(String taNo,Date date,String distributor,String interfaceType) throws IOException {
+        String[] confirmFile = null;
+        List<String> filedetail = null;
+        String readStr = null;
+        if(interfaceType.equals ("21"))
+            confirmFile = ta_to_sale_fileName_21;
+        else
+            confirmFile = ta_to_sale_fileName_20;
+
+
+        String dir =  replaceDir(TA_TO_SALE_DIR,taNo,date,distributor);
+
+        logger.info (dir);
+        File file = new File (dir);
+        if(!file.exists ()){
+            file.mkdirs ();
+        }
+        FileWriter fileWriter = null;
+        // 生成文件
+        for (int i =0 ; i < confirmFile.length; i++){
+            filedetail = taFileConfigMap.get (confirmFile[i]);
+            // 这里是模板里面的内容
+            dir = replaceDir (filedetail.get (0),taNo,date,distributor);
+            file = new File (dir);
+            if(!file.exists ())
+                file.createNewFile ();
+
+            readStr = readFile (dir);
+
+            fileWriter = new FileWriter (file);
+
+
+            fileWriter.close ();
+
+        }
+
+        return false;
+//         throw new NullPointerException();
+    }
+
+    public static String readFile(String dir){
+//        InputStreamReader inputStreamReader = new InputStreamReader (new FileInputStream (dir),"UTF-8");
+        BufferedReader bufferedReader = null;
+        StringBuffer stringBuffer = new StringBuffer ();
+        try {
+            bufferedReader = new BufferedReader (new FileReader (new File(dir)));
+            String strLine = null;
+            while ((strLine = bufferedReader.readLine ()) != null){
+                stringBuffer.append (strLine);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace ();
+        } catch (IOException e) {
+            e.printStackTrace ();
+        } finally {
+            try {
+                bufferedReader.close ();
+            } catch (IOException e) {
+                e.printStackTrace ();
+            }
+        }
+
+        return stringBuffer.toString ();
+    }
+
+    public static String replaceDir(String str,String taNo,Date date,String distributor){
+        String dateStr =  new SimpleDateFormat ("yyyyMMdd").format (date);
+        str = str.replace ("@@",taNo);
+        str = str.replace ("###",distributor);
+        str = str.replace ("YYYYMMDD",dateStr);
+        return str;
+    }
+
     @Test
-    public void testinit(){}
+    public void testinit(){
+        logger.info (taFileConfigMap);
+        logger.info (sequenceFiled);
+        try {
+            NewAirFileForConfirm("01",new Date (),"387","21");
+        } catch (IOException e) {
+            e.printStackTrace ();
+        }
+    }
     /**
     * @Description:   分解每个文件的一行数据，然后存入Map中，方便之后的操作，map 同一key为String，String ，    ---- 可以考虑返回list，因为有必填字段信息，只要遍历必填信息，然后从中取值
     * @Param: [value 需要解析的值, fileinfo 整个文件的配置]
@@ -283,7 +417,7 @@ public class FileTest {
 
     }
 
-    public static void   initConfigFile(Ini ini){
+    public static Map   initConfigFile(Ini ini,boolean listOrMap){
         // 最终返回的对象，里面是完整的数据（文件里面的字段顺序不是按顺序排序的）
         configs = new HashMap<String, Map<String,List>>();
 //        configs = new TreeMap<String,Map<String,List>>(new Comparator<String>() {
@@ -293,7 +427,7 @@ public class FileTest {
 //            }
 //        });
         // 这个是排序的字段
-        sequenceFiled = new HashMap<String, List>();
+        Map<String,List> ret = new HashMap<String, List>();
         Map<String,List> prams ;
         List<List> sequence;
         String[] splitValue;
@@ -314,8 +448,8 @@ public class FileTest {
                     sequence.add(Arrays.asList(splitValue));
                 }
            }
-            configs.put(key,prams);
-           sequenceFiled.put(key,sequence);
+           configs.put(key,prams);
+           ret.put(key,sequence);
         }
 //        for (String key :sequenceFiled.keySet()){
 //            List objectMap =  (List) sequenceFiled.get(key);
@@ -328,7 +462,7 @@ public class FileTest {
 //
 //            }
 //        }
-//        return files;
+        return listOrMap ? ret : configs;
     }
     public static String BackUpStr(String value,int len){
         String ret;
