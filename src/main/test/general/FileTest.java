@@ -38,8 +38,8 @@ public class FileTest {
 
      final static String FILEEND = "OFDCFEND";
 
-     final static String TA_TO_SALE_DIR = BASURL + "/TA_TO_SALE/###/@@/YYYYMMDD";
-     final static String  SALE_TO_TA_DIR = BASURL + "/SALE_TO_TA/###/@@/YYYYMMDD";
+     final static String TA_TO_SALE_DIR = BASURL + "TA_TO_SALE/###/@@/YYYYMMDD";
+     final static String  SALE_TO_TA_DIR = BASURL + "SALE_TO_TA/###/@@/YYYYMMDD";
 
      final static String iniUrl = BASURL +"/OFD_888.ini";
      final static String confirmedUrl = BASURL+"/Required.xml";
@@ -60,7 +60,7 @@ public class FileTest {
      static Map<String,Map<String,List>> configs ;
     // 字段信息
      static Map<String,List> sequenceFiled;
-     static Map<String,List> taFileConfigMap;
+     static Map<String,Map<String,List<String>>> taFileConfigMap;
      static Map<String,Map<String,String>> fileinfo =  new HashMap<String,Map<String,String>>();
      static Map<String, List<Map<String,String>>> confirmFileConf = new HashMap<String, List<Map<String,String>>> ();
      static Class<?>  pubResClass = null;
@@ -147,7 +147,9 @@ public class FileTest {
 
     public static boolean NewAirFileForConfirm(String taNo,Date date,String distributor,String interfaceType) throws IOException {
         String[] confirmFile = null;
-        List<String> filedetail = null;
+
+        Map<String,List<String>> filedetail = taFileConfigMap.get("ta_to_sale");
+        List<String> fileinfo = null;
         String readStr = null;
         if(interfaceType.equals ("21"))
             confirmFile = ta_to_sale_fileName_21;
@@ -155,7 +157,7 @@ public class FileTest {
             confirmFile = ta_to_sale_fileName_20;
 
 
-        String dir =  replaceDir(TA_TO_SALE_DIR,taNo,date,distributor);
+        String dir =  replaceDir(TA_TO_SALE_DIR,taNo,date,distributor),ton;
 
         logger.info (dir);
         File file = new File (dir);
@@ -165,18 +167,20 @@ public class FileTest {
         FileWriter fileWriter = null;
         // 生成文件
         for (int i =0 ; i < confirmFile.length; i++){
-            filedetail = taFileConfigMap.get (confirmFile[i]);
-            // 这里是模板里面的内容
-            dir = replaceDir (filedetail.get (0),taNo,date,distributor);
-            file = new File (dir);
+            fileinfo = filedetail.get (confirmFile[i]);
+            // 获取模板路径，后面读取文件
+            String tempFile = BASURL + fileinfo.get(0);
+            ton = dir + "/" + replaceDir(fileinfo.get(2),taNo,date,distributor);
+            logger.info(ton);
+            file = new File (ton);
+            logger.info(tempFile);
             if(!file.exists ())
                 file.createNewFile ();
 
-            readStr = readFile (dir);
-
+            readStr = replaceDir(readFile (tempFile),taNo,date,distributor) + FILEEND;
+            logger.info(readStr);
             fileWriter = new FileWriter (file);
-
-
+            fileWriter.write(readStr);
             fileWriter.close ();
 
         }
@@ -193,7 +197,7 @@ public class FileTest {
             bufferedReader = new BufferedReader (new FileReader (new File(dir)));
             String strLine = null;
             while ((strLine = bufferedReader.readLine ()) != null){
-                stringBuffer.append (strLine);
+                stringBuffer.append (strLine).append("\n");
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace ();
@@ -210,6 +214,10 @@ public class FileTest {
         return stringBuffer.toString ();
     }
 
+    public static void wirtFile(String dir,String str){
+
+    }
+
     public static String replaceDir(String str,String taNo,Date date,String distributor){
         String dateStr =  new SimpleDateFormat ("yyyyMMdd").format (date);
         str = str.replace ("@@",taNo);
@@ -223,7 +231,7 @@ public class FileTest {
         logger.info (taFileConfigMap);
         logger.info (sequenceFiled);
         try {
-            NewAirFileForConfirm("01",new Date (),"387","21");
+            NewAirFileForConfirm("YH",new Date (),"387","21");
         } catch (IOException e) {
             e.printStackTrace ();
         }

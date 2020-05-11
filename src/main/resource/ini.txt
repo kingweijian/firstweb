@@ -86,7 +86,7 @@
 [02]
 1=C,24,0,申请单编号,AppSheetSerialNo    --
 2=A,8,0,交易确认日期,TransactionCfmDate  --
-3=C,4,0,返回代码,ReturnCode              --  自己写
+3=C,4,0,返回代码,ReturnCode              --  自己写 0000 成功
 4=C,17,0,投资人基金交易帐号,TransactionAccountID    --
 5=C,9,0,销售人代码,DistributorCode             --
 6=C,3,0,业务代码,BusinessCode                 -- 自己生成 （前面+1）
