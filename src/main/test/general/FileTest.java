@@ -204,6 +204,7 @@ public class FileTest {
 
             readStr = replaceDir(readFile (tempFile),taNo,date,distributor) + FILEEND;
             logger.info(readStr);
+
             fileWriter = new FileWriter (file);
             fileWriter.write(readStr);
             fileWriter.close ();
@@ -222,7 +223,7 @@ public class FileTest {
             bufferedReader = new BufferedReader (new FileReader (new File(dir)));
             String strLine = null;
             while ((strLine = bufferedReader.readLine ()) != null){
-                stringBuffer.append (strLine).append("\n");
+                stringBuffer.append (strLine).append("\r\n");
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace ();
@@ -256,7 +257,7 @@ public class FileTest {
         logger.info (taFileConfigMap);
         logger.info (sequenceFiled);
         try {
-            NewAirFileForConfirm("YH",new Date (),"387","21");
+            NewAirFileForConfirm("F1",new Date (),"387","21");
         } catch (IOException e) {
             e.printStackTrace ();
         }
