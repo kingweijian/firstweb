@@ -138,6 +138,31 @@ public class FileTest {
         }
 
     }
+    @Test
+    public void testReadFileLine() throws IOException {
+        String tempFile = BASURL + taFileConfigMap.get("sale_to_ta").get ("01_21").get(0),ton;
+        File file = new File (tempFile);
+        BufferedReader bufferedReader = new BufferedReader (new FileReader (file));
+        String[] str = retLine (bufferedReader,95).split ("\n");
+        logger.info (str.length);
+
+    }
+
+    public static String retLine(BufferedReader bufferedReader, int len) throws IOException {
+        String s = null;
+        StringBuffer stringBuffer = new StringBuffer ();
+            while ((s = bufferedReader.readLine ())!=null ){
+                if(len>0){
+                    len--;
+                }else
+                {
+                    stringBuffer.append (s + "\n");
+                }
+                logger.info (len);
+            }
+        bufferedReader.close ();
+        return stringBuffer.toString ();
+    }
 
     public static void checkFileToNew(File file,boolean isDIR){
         if (!file.exists () && isDIR){
@@ -156,7 +181,6 @@ public class FileTest {
         else
             confirmFile = ta_to_sale_fileName_20;
 
-
         String dir =  replaceDir(TA_TO_SALE_DIR,taNo,date,distributor),ton;
 
         logger.info (dir);
@@ -165,15 +189,16 @@ public class FileTest {
             file.mkdirs ();
         }
         FileWriter fileWriter = null;
+        String tempFile = null;
         // 生成文件
         for (int i =0 ; i < confirmFile.length; i++){
             fileinfo = filedetail.get (confirmFile[i]);
             // 获取模板路径，后面读取文件
-            String tempFile = BASURL + fileinfo.get(0);
+            tempFile = BASURL + fileinfo.get(0);
             ton = dir + "/" + replaceDir(fileinfo.get(2),taNo,date,distributor);
-            logger.info(ton);
+            logger.info( "需要写入的文件 ： --- " + ton);
             file = new File (ton);
-            logger.info(tempFile);
+            logger.info("模板文件 ： ----- " + tempFile);
             if(!file.exists ())
                 file.createNewFile ();
 
