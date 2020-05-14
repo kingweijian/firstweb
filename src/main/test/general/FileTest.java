@@ -81,33 +81,7 @@ public class FileTest {
 
 
         parsaXML();
-        Map<String,String> filedetail04 = new HashMap<String,String>();
-        filedetail04.put("contextLen","1235");
-        filedetail04.put("filenum","04");
-        filedetail04.put ("size","121");
 
-        fileinfo.put("04",filedetail04);
-
-        Map<String,String> filedetail01 = new HashMap<String,String>();
-        filedetail01.put("contextLen","1456");
-        filedetail01.put("filenum","01");
-        filedetail01.put ("size","84");
-
-        fileinfo.put("01",filedetail01);
-
-        Map<String,String> filedetail02 = new HashMap<String,String>();
-        filedetail02.put("contextLen","466");
-        filedetail02.put("filenum","02");
-        filedetail02.put ("size","27");
-
-        fileinfo.put("02",filedetail02);
-
-        Map<String,String> filedetail03 = new HashMap<String,String>();
-        filedetail03.put("contextLen","666");
-        filedetail03.put("filenum","03");
-        filedetail03.put ("size","74");
-
-        fileinfo.put("03",filedetail03);
 
         ta_to_sale_fileName[0] = "02";
         ta_to_sale_fileName[1] = "04";
@@ -668,7 +642,8 @@ public class FileTest {
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder ();
             Document document = documentBuilder.parse (confirmedUrl);
             NodeList nodeList = document.getElementsByTagName ("file");
-            for (int i = 0; i < nodeList.getLength (); i++){
+            for (int i = 0; i < nodeList.getLength (); i++)
+            {
                 Node node = nodeList.item (i);
                 attrConf = new ArrayList<Map<String, String>> ();
                 NamedNodeMap namedNodeMap = node.getAttributes ();
