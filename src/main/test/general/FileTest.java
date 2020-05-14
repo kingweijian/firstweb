@@ -38,8 +38,8 @@ public class FileTest {
 
      final static String FILEEND = "OFDCFEND";
 
-     final static String TA_TO_SALE_DIR = BASURL + "TA_TO_SALE/###/@@/YYYYMMDD";
-     final static String  SALE_TO_TA_DIR = BASURL + "SALE_TO_TA/###/@@/YYYYMMDD";
+     final static String TA_TO_SALE_DIR = BASURL + "TA_TO_SALE/###/@@/YYYYMMDD/";
+     final static String  SALE_TO_TA_DIR = BASURL + "SALE_TO_TA/###/@@/YYYYMMDD/";
 
      final static String iniUrl = BASURL +"/OFD_888.ini";
      final static String confirmedUrl = BASURL+"/Required.xml";
@@ -141,9 +141,7 @@ public class FileTest {
     @Test
     public void testReadFileLine() throws IOException {
         String tempFile = BASURL + taFileConfigMap.get("sale_to_ta").get ("01_21").get(0),ton;
-        File file = new File (tempFile);
-        BufferedReader bufferedReader = new BufferedReader (new FileReader (file));
-        String[] str = retLine (bufferedReader,95).split ("\n");
+        String[] str = readFile (tempFile,95).split ("\n");
         logger.info (str.length);
 
     }
@@ -170,7 +168,7 @@ public class FileTest {
         }
     }
 
-    public static boolean NewAirFileForConfirm(String taNo,Date date,String distributor,String interfaceType) throws IOException {
+    public static boolean NewAirFileForConfirm(String taNo,String date,String distributor,String interfaceType) throws IOException {
         String[] confirmFile = null;
 
         Map<String,List<String>> filedetail = taFileConfigMap.get("ta_to_sale");
@@ -195,14 +193,14 @@ public class FileTest {
             fileinfo = filedetail.get (confirmFile[i]);
             // 获取模板路径，后面读取文件
             tempFile = BASURL + fileinfo.get(0);
-            ton = dir + "/" + replaceDir(fileinfo.get(2),taNo,date,distributor);
+            ton = dir + replaceDir(fileinfo.get(2),taNo,date,distributor);
             logger.info( "需要写入的文件 ： --- " + ton);
             file = new File (ton);
             logger.info("模板文件 ： ----- " + tempFile);
             if(!file.exists ())
                 file.createNewFile ();
 
-            readStr = replaceDir(readFile (tempFile),taNo,date,distributor) + FILEEND;
+            readStr = replaceDir(readFile (tempFile,-1),taNo,date,distributor) + FILEEND;
             logger.info(readStr);
 
             fileWriter = new FileWriter (file);
@@ -214,16 +212,70 @@ public class FileTest {
         return false;
 //         throw new NullPointerException();
     }
+    @Test
+    public void TestgetSale_to_taFileList(){
+        logger.info (Arrays.toString (getSale_to_taFileList ("E6","20200507","387","21",1)));
 
-    public static String readFile(String dir){
+    }
+
+    public static String[] getTaFileName(String[] fileName){
+        String[] ret = new String[fileName.length];
+        String ton = "";
+        for (int i = 0; i < fileName.length; i++){
+            ton = fileName[i];
+            ret[i] = ton.substring (ton.lastIndexOf ("_")+1,ton.lastIndexOf ("."));
+        }
+        return ret;
+    }
+
+    /**
+     * 获取sale_to_ta 文件目录
+     * @param taNo
+     * @param date
+     * @param distributor
+     * @param interfaceType
+     * @return
+     */
+    public static String[] getSale_to_taFileList(String taNo,String date,String distributor,String interfaceType,int position){
+        String[] sale_to_ta_file = new String[sale_to_ta_fileName.length];
+        if(interfaceType.equals ("21"))
+            sale_to_ta_file = copyArray (sale_to_ta_fileName_21,sale_to_ta_file);
+        else
+            sale_to_ta_file = copyArray (sale_to_ta_fileName_20,sale_to_ta_file);
+        Map<String,List<String>> filedetail = taFileConfigMap.get("sale_to_ta");
+        List<String> fileinfo = null;
+        for (int i = 0 ; i < sale_to_ta_file.length; i++){
+            fileinfo = filedetail.get (sale_to_ta_file[i]);
+            sale_to_ta_file[i] = replaceDir (fileinfo.get(position),taNo,date,distributor);
+        }
+
+        return sale_to_ta_file;
+    }
+
+    public static  <S> S[] copyArray(S[] source,S[] copys){
+       for (int i = 0; i < source.length;i++){
+           copys[i] = source[i];
+       }
+        return copys;
+    }
+    public static String readFile(String dir,int len){
+        return readFile (new File(dir),len);
+    }
+    public static String readFile(File file,int len){
 //        InputStreamReader inputStreamReader = new InputStreamReader (new FileInputStream (dir),"UTF-8");
         BufferedReader bufferedReader = null;
         StringBuffer stringBuffer = new StringBuffer ();
         try {
-            bufferedReader = new BufferedReader (new FileReader (new File(dir)));
+            bufferedReader = new BufferedReader (new FileReader (file));
             String strLine = null;
             while ((strLine = bufferedReader.readLine ()) != null){
-                stringBuffer.append (strLine).append("\r\n");
+                if(len>0){
+                    len--;
+                }else
+                {
+                    stringBuffer.append (strLine).append("\r\n");
+                }
+
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace ();
@@ -244,11 +296,11 @@ public class FileTest {
 
     }
 
-    public static String replaceDir(String str,String taNo,Date date,String distributor){
-        String dateStr =  new SimpleDateFormat ("yyyyMMdd").format (date);
+    public static String replaceDir(String str,String taNo,String date,String distributor){
+//        String dateStr =  new SimpleDateFormat ("yyyyMMdd").format (date);
         str = str.replace ("@@",taNo);
         str = str.replace ("###",distributor);
-        str = str.replace ("YYYYMMDD",dateStr);
+        str = str.replace ("YYYYMMDD",date);
         return str;
     }
 
@@ -257,7 +309,7 @@ public class FileTest {
         logger.info (taFileConfigMap);
         logger.info (sequenceFiled);
         try {
-            NewAirFileForConfirm("F1",new Date (),"387","21");
+            NewAirFileForConfirm("F1","20200507","387","21");
         } catch (IOException e) {
             e.printStackTrace ();
         }
@@ -298,16 +350,17 @@ public class FileTest {
      * @param fileConfig    需要解析的文件配置 （需要解析的长度，字段大小... 等等待补充信息，后期读取配置）
      * @return
      */
-    public static String generateConfirmedFileContext(String[] fileConent,List<List> fileinfo,Map<String,String> fileConfig){
+    public static String generateConfirmedFileContext(String[] fileConent,List<List> fileinfo,Map<String,String> fileConfig,String fileName,String TANO){
 
 
         Map<String,String> filedinfo ;
         // TA编码
-        String TANo = "65";
+
         // 获得需要解析的文件名字
-        String fileName = fileConfig.get ("filenum");
+
         // 根据解析文件名字获取确认文件名字
         fileName = getCofirmedFileName (fileName);
+        if(fileName == null) return null;
         // 获取确认文件必填字段信息
         Map<String,String> confirmInfo = confirmFileConf.get (fileName).get (0);
         // 获取确认文件必填字段信息
@@ -325,16 +378,17 @@ public class FileTest {
 //        }
         // fileConent.length - 1 排除最后一行空行
         PubRes res = new PubRes (
-                fileName,TANo,
+                fileName,TANO,
                 "",null,
                 true,false,
                 fileName,"0");
+        StringBuffer stringBuffer = new StringBuffer ();
         for (int i = 0; i < fileConent.length; i++){
             filedinfo = parsingLine (fileConent[i],fileinfo,fileConfig);
-
-            logger.info (generateConfirmedData(filedinfo,fileconfig,confieFiled,res));
+            stringBuffer.append (generateConfirmedData(filedinfo,fileconfig,confieFiled,res));
+//            logger.info (generateConfirmedData(filedinfo,fileconfig,confieFiled,res));
         }
-        return null;
+        return stringBuffer.toString ();
     }
     @Test
     public void TestFS() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
@@ -396,7 +450,7 @@ public class FileTest {
             }
 
         }
-        return ret.toString ();
+        return ret.append ("\r\n").toString ();
     }
 
     public static String getCofirmedFileName(String fileName){
@@ -423,20 +477,49 @@ public class FileTest {
         //读取文件
 
         // 获得文件关键字段
-        String filenum = "03";
-        String value = "586586                                                                                                                  568856                        6568586              20200318000000000463870113644636343871                 200317test1                                                                                                             2020031814521721000008656                          0126347              0108A00002795    387      001                                                                                                         3652259587433654                                                                                                   0000000012345678912             387                            200317test1                                                                0000000001                           招商银行13                                                  3652259587433654                     00000000   8866                                                         20991231                5                                                                                                                                                                   000000000000000000 8                                              0000000000000000                                                             2                                                                                                          \n"+
-                       "586587                                                                                                                  568856                        6568586              20200318000000000463870113644636343871                 200317test1                                                                                                             2020031814521721000008656                          0126347              0108A00002795    387      001                                                                                                         3652259587433654                                                                                                   0000000012345678912             387                            200317test1                                                                0000000001                           招商银行13                                                  3652259587433654                     00000000   8866                                                         20991231                5                                                                                                                                                                   000000000000000000 8                                              0000000000000000                                                             2                                                                                                          \n"  ;
-        String value01 = "湖北省武汉市                                                                                                                                                               bbbbbbbbyyy000cccccccc  1JGZyyycccccccc                个人yyydddddddd                                                                                                         bbbbbbbb1500001999999                                                   JYZHyyyffffffff  yyy      zzz                                                                                                 19990829Qyyycccccccc       yyy 01 ASP@139.C0M                                                     02                       0000000013489883848             yyy                            个人1               0                    Zyyyeeeeeeee                      0000000001                           个人yyydddddddd                                             ZJZH01                               00000000156yyy                                                                                                                                                                                                                                                      000000000000000000                                                0000000000000000                                                             2                                                                                                                 \n"
-                        + "湖南省长沙市                                                                                                                                                               bbbbbbbbyyy000cccccccc  1JGZyyycccccccc                个人yyydddddddd                                                                                                         bbbbbbbb1500001999999                                                   JYZHyyyffffffff  yyy      zzz                                                                                                 19990829Qyyycccccccc       yyy 01 ASP@139.C0M                                                     02                       0000000013489883848             yyy                            个人1               0                    Zyyyeeeeeeee                      0000000001                           个人yyydddddddd                                             ZJZH01                               00000000156yyy                                                                                                                                                                                                                                                      000000000000000000                                                0000000000000000                                                             2                                                                                                                 ";
-        String value04 = "2020040900000000083387202020041315600000000000000000000000000000000D4990102020040909022900000108A00002722    387      00000000000000000000003000000000149D4100008795438700000000011      110000                       20200413000000000000000000000010000387                                      00000000001        0000000000000000000000000000000000000000000                                                                                20200409                                         00000000000000000000060000000000000000000000000000000000000010000         000000000000000000000000000000000000000000000000000000000000000000000000        0000000000100                 0000000000                         8866                                                      00                                                                  00000 0000000000000000    00000      00000030000000000000000000100000000000000000000000000000000000000000000000000000000000000000000 38700000000011      00000000000000000000000000000000000000000000000000000000000000000        000000000000000000000000000000000000                                                         0000000000060000 20200413000000000000000000000000000000000000000000000000                \n";
-        String value03 = "202004100000000002638720D49901 202004100945240108A00001840    387      00000000000000000000000001000000020D4100008792110000                       156387                                      10000000                                                        00000                 0000000000                              0000000000000100                                                                  00000000000000000                 1                                  8866                                                      00               2                                          00000 0000000000000000    10000                       00000000000000000000000000\n";
+//        String filenum = "03";
+//        String value = "586586                                                                                                                  568856                        6568586              20200318000000000463870113644636343871                 200317test1                                                                                                             2020031814521721000008656                          0126347              0108A00002795    387      001                                                                                                         3652259587433654                                                                                                   0000000012345678912             387                            200317test1                                                                0000000001                           招商银行13                                                  3652259587433654                     00000000   8866                                                         20991231                5                                                                                                                                                                   000000000000000000 8                                              0000000000000000                                                             2                                                                                                          \n"+
+//                       "586587                                                                                                                  568856                        6568586              20200318000000000463870113644636343871                 200317test1                                                                                                             2020031814521721000008656                          0126347              0108A00002795    387      001                                                                                                         3652259587433654                                                                                                   0000000012345678912             387                            200317test1                                                                0000000001                           招商银行13                                                  3652259587433654                     00000000   8866                                                         20991231                5                                                                                                                                                                   000000000000000000 8                                              0000000000000000                                                             2                                                                                                          \n"  ;
+//        String value01 = "湖北省武汉市                                                                                                                                                               bbbbbbbbyyy000cccccccc  1JGZyyycccccccc                个人yyydddddddd                                                                                                         bbbbbbbb1500001999999                                                   JYZHyyyffffffff  yyy      zzz                                                                                                 19990829Qyyycccccccc       yyy 01 ASP@139.C0M                                                     02                       0000000013489883848             yyy                            个人1               0                    Zyyyeeeeeeee                      0000000001                           个人yyydddddddd                                             ZJZH01                               00000000156yyy                                                                                                                                                                                                                                                      000000000000000000                                                0000000000000000                                                             2                                                                                                                 \n"
+//                        + "湖南省长沙市                                                                                                                                                               bbbbbbbbyyy000cccccccc  1JGZyyycccccccc                个人yyydddddddd                                                                                                         bbbbbbbb1500001999999                                                   JYZHyyyffffffff  yyy      zzz                                                                                                 19990829Qyyycccccccc       yyy 01 ASP@139.C0M                                                     02                       0000000013489883848             yyy                            个人1               0                    Zyyyeeeeeeee                      0000000001                           个人yyydddddddd                                             ZJZH01                               00000000156yyy                                                                                                                                                                                                                                                      000000000000000000                                                0000000000000000                                                             2                                                                                                                 ";
+//        String value04 = "2020040900000000083387202020041315600000000000000000000000000000000D4990102020040909022900000108A00002722    387      00000000000000000000003000000000149D4100008795438700000000011      110000                       20200413000000000000000000000010000387                                      00000000001        0000000000000000000000000000000000000000000                                                                                20200409                                         00000000000000000000060000000000000000000000000000000000000010000         000000000000000000000000000000000000000000000000000000000000000000000000        0000000000100                 0000000000                         8866                                                      00                                                                  00000 0000000000000000    00000      00000030000000000000000000100000000000000000000000000000000000000000000000000000000000000000000 38700000000011      00000000000000000000000000000000000000000000000000000000000000000        000000000000000000000000000000000000                                                         0000000000060000 20200413000000000000000000000000000000000000000000000000                \n";
+//        String value03 = "202004100000000002638720D49901 202004100945240108A00001840    387      00000000000000000000000001000000020D4100008792110000                       156387                                      10000000                                                        00000                 0000000000                              0000000000000100                                                                  00000000000000000                 1                                  8866                                                      00               2                                          00000 0000000000000000    10000                       00000000000000000000000000\n";
 
 
-        List<List> fileconfig = sequenceFiled.get(filenum);
+//        List<List> fileconfig = sequenceFiled.get(filenum);
 
 //        logger.info (parsingLine (value03,fileconfig,fileinfo.get (filenum)));
+        String TANO = "E6", date = "20200507",  distributor = "387", interfaceType = "21",
+                baseDir = replaceDir (SALE_TO_TA_DIR,TANO,date,distributor);
+        // 获取文件全称
+        String[] filename = getSale_to_taFileList (
+                TANO,date,distributor,interfaceType,2
+        );
+        // 获取文件开始位置
+        String[] fileStart = getSale_to_taFileList (
+                TANO,date,distributor,interfaceType,1
+        );
+        // 获取文件简称
+        String[] fileAbbreviation = getTaFileName (filename);
+        logger.info (Arrays.toString (fileAbbreviation));
+        String filenum = "";
+        for (int i = 0; i < fileAbbreviation.length; i++){
 
-        generateConfirmedFileContext(value03.split ("\n"),fileconfig,fileinfo.get (filenum));
+           File file = new File(baseDir + "/" + filename[i]);
+           if(file.exists ()){
+               logger.info (file.getPath ());
+              filenum = fileAbbreviation[i];
+               generateConfirmedFileContext(
+                       readFile (file,Integer.valueOf (fileStart[i])).split ("\r\n")
+                       ,sequenceFiled.get(filenum),
+                       fileinfo.get (filenum),
+                       "03",
+                       TANO);
+           }
+
+        }
+
+
 
     }
     @Test
