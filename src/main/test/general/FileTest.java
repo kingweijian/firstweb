@@ -305,7 +305,7 @@ public class FileTest {
         int size = Integer.valueOf (fileFiledNum);
         for (int i = 0 ; i < size ; i++){
             cofdetail = fileinfo.get (i);
-//            logger.info(Arrays.toString(cofdetail.toArray())  + " --- " +cofdetail.get (1) + "  ----  " +  i + " start --- " +start);
+            logger.info(Arrays.toString(cofdetail.toArray())  + " --- " +cofdetail.get (1) + "  ----  " +  i + " start --- " +start);
             // 分割数据
             end = Integer.valueOf( cofdetail.get (1));
 //            logger.info(value.substring(start, start+end));
