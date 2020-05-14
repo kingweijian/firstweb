@@ -197,7 +197,7 @@
 8=A,8,0,交易发生f日期,TransactionDate    --
 9=A,6,0,交易发生时间,Transactiontime    --
 10=C,4,0,返回代码,ReturnCode            -- 自己生成
-11=C,17,0,投资人基金交易帐号,TransactionAccountID   --
+11=C,17,0,投资人基金交易帐号,TransactionAccountID   -- TransactionAccountID
 12=C,9,0,销售人代码,DistributorCode             --
 13=N,16,2,申请份额,ApplicationVol           --
 14=N,16,2,申请金额,ApplicationAmount        --

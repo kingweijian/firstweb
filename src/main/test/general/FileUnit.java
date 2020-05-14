@@ -299,6 +299,16 @@ public class FileUnit {
         return BranchCode;
     }
     /**
+    * @Description: 投资人账号
+    * @Param: []
+    * @return: java.lang.String
+    * @Author: weijian
+    * @Date: 2020/5/15
+    */
+
+
+
+    /**
     * @Description: 对方销售人处投资人基金交易帐 取 TransactionAccountID
     * @Param: []
     * @return: java.lang.String
@@ -307,7 +317,7 @@ public class FileUnit {
     */
     public static String TargetTransactionAccountID(PubRes res){
         String TransactionAccountID = res.getToBeresolvedInfo ().get ("TransactionAccountID");
-
+        logger.info (" 投资人账号 ： --" + TransactionAccountID);
         return TransactionAccountID;
     }
     /**
@@ -535,6 +545,16 @@ public class FileUnit {
 
         return copyChar ("0",16);
     }
+
+    /**
+     * 巨额赎回
+     * @param res
+     * @return
+     */
+    public static String LargeRedemptionFlag(PubRes res){
+        return "0";
+    }
+
     /**
     * @Description: 如果你一定要买这么多份额的话就要补差，基本 0
     * @Param: []
