@@ -283,7 +283,7 @@ public class FileTest {
         logger.info (taFileConfigMap);
         logger.info (sequenceFiled);
         try {
-            NewAirFileForConfirm("F1","20200507","387","21");
+            NewAirFileForConfirm("4T","20200514","387","21");
         } catch (IOException e) {
             e.printStackTrace ();
         }
@@ -297,11 +297,12 @@ public class FileTest {
      *            类型		 长度	 保留位数	     中文注释	        字段名
      *            C,		 60,		0	,	 通讯地址,	     Address
     */
-    public static Map<String,String> parsingLine(String value,List<List> fileinfo,Map<String,String> fileConfig){
+    public static Map<String,String> parsingLine(String value,List<List> fileinfo,String fileFiledNum,String filelinelen){
         Map<String,String> reaulst = new HashMap<String, String> ();
         int start = 0,end; List<String> cofdetail;
-        value = BackUpStr (value,Integer.valueOf(fileConfig.get("contextLen")));
-        int size = Integer.valueOf (fileConfig.get ("size"));
+        value = BackUpStr (value,Integer.valueOf(filelinelen));
+        logger.info(value.length());
+        int size = Integer.valueOf (fileFiledNum);
         for (int i = 0 ; i < size ; i++){
             cofdetail = fileinfo.get (i);
 //            logger.info(Arrays.toString(cofdetail.toArray())  + " --- " +cofdetail.get (1) + "  ----  " +  i + " start --- " +start);
@@ -321,12 +322,13 @@ public class FileTest {
      *
      * @param fileConent 需要解析的文件内容
      * @param fileinfo     需要解析的文件信息（里面主要包括文件字段信息）
-     * @param fileConfig    需要解析的文件配置 （需要解析的长度，字段大小... 等等待补充信息，后期读取配置）
+     * @param   fileFiledNum  文件有多少个字段 ,需要解析的文件配置 （需要解析的长度，字段大小... 等等待补充信息，后期读取配置）
+     * @param filelinelen    文件一条内容的长度 ,需要解析的文件配置 （需要解析的长度，字段大小... 等等待补充信息，后期读取配置）
      * @return
      */
-    public static String generateConfirmedFileContext(String[] fileConent,List<List> fileinfo,Map<String,String> fileConfig,String fileName,String TANO){
+    public static String generateConfirmedFileContext(String[] fileConent,List<List> fileinfo,String fileFiledNum,String filelinelen,String fileName,String TANO){
 
-
+        logger.info(fileConent.length-1);
         Map<String,String> filedinfo ;
         // TA编码
 
@@ -341,24 +343,25 @@ public class FileTest {
         String itmflag = confirmInfo.get ("itmflag");
         // 分割确认文件必填字段信息
         String[] confieFiled = itmflag.split ("\\|");
-        // 获得 需要确认文件里面的字段信息
+        // 获得 确认文件里面的字段信息
         List<List> fileconfig = sequenceFiled.get(fileName);
 
         List<String> fileddeatil ;
 //        for (int i = 0; i < confieFiled.length; i++){
 //            fileddeatil = fileconfig.get (i);
 //            logger.info (confieFiled[i] + " --- " + fileddeatil.get (4));
+//      }
 //
-//        }
-        // fileConent.length - 1 排除最后一行空行
         PubRes res = new PubRes (
                 fileName,TANO,
                 "",null,
                 true,false,
                 fileName,"0");
         StringBuffer stringBuffer = new StringBuffer ();
-        for (int i = 0; i < fileConent.length; i++){
-            filedinfo = parsingLine (fileConent[i],fileinfo,fileConfig);
+        for (int i = 0; i < fileConent.length-1; i++){
+            logger.info(fileConent[i]);
+            filedinfo = parsingLine (fileConent[i],fileinfo,fileFiledNum,filelinelen);
+//            logger.info(generateConfirmedData(filedinfo,fileconfig,confieFiled,res));
             stringBuffer.append (generateConfirmedData(filedinfo,fileconfig,confieFiled,res));
 //            logger.info (generateConfirmedData(filedinfo,fileconfig,confieFiled,res));
         }
@@ -394,17 +397,17 @@ public class FileTest {
                 method = pubResClass.getMethod (key, PubRes.class);
                 if(method!=null){
                     ret.append (String.valueOf (method.invoke (pubResClass,res)));
-                    logger.info ("确认字段 ： "+fileddeatil.get (3)+" "+confieFiled[i] + " --- " +key + " --- " +method.invoke (method,res));
+//                    logger.info ("确认字段 ： "+fileddeatil.get (3)+" "+confieFiled[i] + " --- " +key + " --- " +method.invoke (method,res));
                     continue;
                 }
             } catch (IllegalAccessException e) {
-                logger.error ("error "+key,e);
+//                logger.error ("error "+key,e);
                 e.printStackTrace ();
             } catch (InvocationTargetException e) {
-                logger.error ("error "+key,e);
+//                logger.error ("error "+key,e);
 
             }catch (NoSuchMethodException e) {
-               logger.error ("error "+key,e);
+//               logger.error ("error "+key,e);
             }
 //                logger.info ("确认字段 ： "+fileddeatil.get (3)+" "+confieFiled[i] + " --- " +key + " --- " +ret.toString ());
 
@@ -473,22 +476,35 @@ public class FileTest {
         String[] fileStart = getSale_to_taFileList (
                 TANO,date,distributor,interfaceType,1
         );
+
+        // 获取文件有多少个字段
+        String[] fileFiledNum = getSale_to_taFileList (
+                TANO,date,distributor,interfaceType,4
+        );
+
+        String[] fileLinelen = getSale_to_taFileList (
+                TANO,date,distributor,interfaceType,3
+        );
+
         // 获取文件简称
         String[] fileAbbreviation = getTaFileName (filename);
         logger.info (Arrays.toString (fileAbbreviation));
-        String filenum = "";
+        String filenum = "",ret;
         for (int i = 0; i < fileAbbreviation.length; i++){
 
            File file = new File(baseDir + "/" + filename[i]);
            if(file.exists ()){
                logger.info (file.getPath ());
               filenum = fileAbbreviation[i];
-               generateConfirmedFileContext(
+
+                ret = generateConfirmedFileContext(
                        readFile (file,Integer.valueOf (fileStart[i])).split ("\r\n")
                        ,sequenceFiled.get(filenum),
-                       fileinfo.get (filenum),
+                       fileFiledNum[i],
+                       fileLinelen[i],
                        "03",
                        TANO);
+                logger.info(ret);
            }
 
         }

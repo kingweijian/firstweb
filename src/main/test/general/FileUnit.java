@@ -509,7 +509,7 @@ public class FileUnit {
     * @Date: 2020/5/3
     */
     public static String RefundAmount(PubRes res){
-        if(!res.getToBeresolvedInfo ().get ("ReturnCode").equals ("0000")){
+        if(res.isSuccess()){
             return res.getToBeresolvedInfo ().get ("ApplicationAmount");
         }
         return copyChar ("0",16);
