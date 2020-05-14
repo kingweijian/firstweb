@@ -1,0 +1,20 @@
+OFDCFDAT
+21  
+387      
+E6       
+20200507
+   
+13
+387     
+E6      
+007
+FundCode
+DistributorCode
+BusinessCode
+AggregationOfTransactionByBusinessType
+AggregationDate
+TotalSuccessfulVol
+TotalSuccessfulAmount
+00000001
+E60021387      022000000052020050700000000000000000000000032800000
+OFDCFEND
