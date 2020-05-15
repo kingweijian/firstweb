@@ -34,6 +34,13 @@ public class FileUnit {
 
        return res.getFileCode ();
    }
+
+
+   public static String TransactionCfmDate(PubRes res){
+       return simpleDateFormat.format(new Date());
+   }
+
+
 /**
 * @Description: BusinessCode
  * @Param: [filename, issuccess, isgrent, code]
@@ -41,7 +48,7 @@ public class FileUnit {
 * @Author: weijian
 * @Date: 2020/5/3
 */
-   public static String grenrBusinessCode(PubRes res){
+   public static String BusinessCode(PubRes res){
         String code = res.getToBeresolvedInfo ().get ("BusinessCode");
        return "1" + code.substring (1,code.length ());
 
@@ -273,7 +280,7 @@ public class FileUnit {
     */
     public static String Specification(PubRes res){
 
-        return copyChar (" ",60);
+        return copyChar (" ",61);
     }
     /**
     * @Description: 对方销售人代码 取 DistributorCode

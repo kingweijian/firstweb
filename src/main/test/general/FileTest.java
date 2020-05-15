@@ -283,7 +283,7 @@ public class FileTest {
         logger.info (taFileConfigMap);
         logger.info (sequenceFiled);
         try {
-            NewAirFileForConfirm("4T","20200514","387","21");
+            NewAirFileForConfirm("5L","20200515","387","21");
         } catch (IOException e) {
             e.printStackTrace ();
         }
@@ -305,9 +305,9 @@ public class FileTest {
         int size = Integer.valueOf (fileFiledNum);
         for (int i = 0 ; i < size ; i++){
             cofdetail = fileinfo.get (i);
-            logger.info(Arrays.toString(cofdetail.toArray())  + " --- " +cofdetail.get (1) + "  ----  " +  i + " start --- " +start);
             // 分割数据
             end = Integer.valueOf( cofdetail.get (1));
+            logger.info(Arrays.toString(cofdetail.toArray())  + " --- " + value.substring(start, start+end) + "  ----  " +  i + " start --- " +start);
 //            logger.info(value.substring(start, start+end));
             reaulst.put (cofdetail.get (4),value.substring(start, start+end));
             start += end;
