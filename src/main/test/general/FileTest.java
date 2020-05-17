@@ -65,7 +65,7 @@ public class FileTest {
      static Map<String, List<Map<String,String>>> confirmFileConf = new HashMap<String, List<Map<String,String>>> ();
      static Class<?>  pubResClass = null;
     @Before
-    public void init() throws ClassNotFoundException {
+    public static void init() throws ClassNotFoundException {
         logger.info ("BASEURL -- " + BASURL);
         Ini ini = null;
         try {
@@ -141,10 +141,24 @@ public class FileTest {
             file.mkdir ();
         }
     }
-
     public static boolean NewAirFileForConfirm(String taNo,String date,String distributor,String interfaceType) throws IOException {
-        String[] confirmFile = null;
+        return NewFile (taNo,date,distributor,interfaceType,null,null);
+    }
 
+    /**
+     * 生成文件方法
+     * @param taNo
+     * @param date
+     * @param distributor
+     * @param interfaceType 接口类型
+     * @param content 需要写入文件的内容
+     * @return
+     * @throws IOException
+     */
+    public static boolean NewFile(String taNo,String date,String distributor,String interfaceType, Object content,String fileName) throws IOException {
+        String[] confirmFile = null;
+        boolean isAir = true;
+        if(content == null) isAir = false;
         Map<String,List<String>> filedetail = taFileConfigMap.get("ta_to_sale");
         List<String> fileinfo = null;
         String readStr = null;
@@ -153,42 +167,92 @@ public class FileTest {
         else
             confirmFile = ta_to_sale_fileName_20;
 
-        String dir =  replaceDir(TA_TO_SALE_DIR,taNo,date,distributor),ton;
 
-        logger.info (dir);
+
+        FileWriter fileWriter = null;
+        String tempFile = null;
+//        logger.info ("" + Arrays.toString ((String[])content));
+        // 生成文件
+        if(content == null){
+            AirFile (confirmFile,content,filedetail,taNo,date,distributor,null);
+        }else {
+            AirFile (confirmFile,content,filedetail,taNo,date,distributor,fileName);
+        }
+
+
+        return true;
+//         throw new NullPointerException();
+    }
+
+    /**
+     * 生成文件方法
+     * @param confirmFile 确认文件，需要生成的文件列表
+     * @param filedetail 确认字段，需要根据文件去获取
+     * @param taNo  TANO
+     * @param date 时间字符串
+     * @param distributor 代销人
+     * @throws IOException
+     */
+    public static void AirFile(
+            String[] confirmFile,
+            Object object,
+            Map<String,List<String>> filedetail,
+            String taNo,
+            String date,
+            String distributor,
+            String fileName) {
+
+        // 判断，生成的是否是单个文件
+        boolean isOne = fileName == null ? false : true;
+        // 获取文件字段信息
+        List<String> fileinfo = null;
+        String tempFile = null,  readStr = null, ton = "";
+        // /Users/weijian/IdeaProjects/firstweb/target/test-classes/TA_TO_SALE/387/E6/20200507/
+        String dir =  replaceDir(TA_TO_SALE_DIR,taNo,date,distributor);
+
+        logger.info (Arrays.toString (confirmFile));
         File file = new File (dir);
         if(!file.exists ()){
             file.mkdirs ();
         }
-        FileWriter fileWriter = null;
-        String tempFile = null;
-        // 生成文件
-        for (int i =0 ; i < confirmFile.length; i++){
-            fileinfo = filedetail.get (confirmFile[i]);
-            // 获取模板路径，后面读取文件
-            tempFile = BASURL + fileinfo.get(0);
-            ton = dir + replaceDir(fileinfo.get(2),taNo,date,distributor);
-            logger.info( "需要写入的文件 ： --- " + ton);
-            file = new File (ton);
-            logger.info("模板文件 ： ----- " + tempFile);
-            if(!file.exists ())
-                file.createNewFile ();
+        // 如果不是一个文件，那么就按照TA_TO_SALE 或者 SALE_TO_TA来处理
+        if(!isOne) {
+            String[] datas = (String[]) object;
+            logger.info ("datas : --- " + Arrays.toString (datas));
+            for (int i = 0; i < confirmFile.length; i++) {
+                // 获取文件字段信息
+                fileinfo = filedetail.get (confirmFile[i]);
+                // 获取模板路径，后面读取文件
+                tempFile = BASURL + fileinfo.get (0);
+                // 获取文件目录，需要生成的文件目录
+                ton = dir + replaceDir (fileinfo.get (2), taNo, date, distributor);
+                logger.info ("需要写入的文件 ： --- " + ton);
+                file = new File (ton);
 
-            readStr = replaceDir(readFile (tempFile,-1),taNo,date,distributor) + FILEEND;
-            logger.info(readStr);
+                writFile (file,tempFile,taNo,date,distributor,null);
 
-            fileWriter = new FileWriter (file);
-            fileWriter.write(readStr);
-            fileWriter.close ();
 
+            }
+        }else{
+            try {
+                logger.info ("fileName ---- > " + fileName);
+                fileinfo = filedetail.get (fileName);
+                logger.info (fileinfo);
+                tempFile = BASURL + fileinfo.get (0);
+                ton = dir + replaceDir (fileinfo.get (2), taNo, date, distributor);
+                file = new File (ton);
+                String data = (String) object;
+                logger.info (data);
+                writFile (file, tempFile, taNo, date, distributor,data);
+            }catch (NullPointerException e){
+                logger.info (e);
+            }
         }
-
-        return false;
-//         throw new NullPointerException();
     }
+
     @Test
     public void TestgetSale_to_taFileList(){
-        logger.info (Arrays.toString (getSale_to_taFileList ("E6","20200507","387","21",1)));
+        logger.info (Arrays.toString (getSale_to_taFileList ("E6","20200507","387","21",2)));
 
     }
 
@@ -232,6 +296,37 @@ public class FileTest {
        }
         return copys;
     }
+
+    public static void writFile(File file,String tempFile,String taNo,String date,String distributor,String data){
+//        logger.info ("模板文件 ： ----- " + tempFile);
+        // 写入文件，关闭流
+        FileWriter fileWriter = null;
+        String readStr = null;
+        try {
+            if (!file.exists ())
+                file.createNewFile ();
+            // readFile 读取文件， 替换文件中的 taNo , date , distributo
+            // 到这一步 readStr 需要生成的文件就已经准备好，如果有数据，读取(生成)好了之后追加到这个字符串后面
+            readStr = replaceDir (readFile (tempFile, -1), taNo, date, distributor);
+            if(data != null )
+                readStr += data + FILEEND;
+            else
+                readStr +=  FILEEND;
+            logger.info (readStr);
+            fileWriter = new FileWriter (file);
+            fileWriter.write (readStr);
+        } catch (IOException e) {
+            e.printStackTrace ();
+        } finally {
+            try {
+                fileWriter.close ();
+            } catch (IOException e) {
+                e.printStackTrace ();
+            }
+
+        }
+    }
+
     public static String readFile(String dir,int len){
         return readFile (new File(dir),len);
     }
@@ -278,16 +373,7 @@ public class FileTest {
         return str;
     }
 
-    @Test
-    public void testinit(){
-        logger.info (taFileConfigMap);
-        logger.info (sequenceFiled);
-        try {
-            NewAirFileForConfirm("4T","20200514","387","21");
-        } catch (IOException e) {
-            e.printStackTrace ();
-        }
-    }
+
     /**
     * @Description:   分解每个文件的一行数据，然后存入Map中，方便之后的操作，map 同一key为String，String ，    ---- 可以考虑返回list，因为有必填字段信息，只要遍历必填信息，然后从中取值
     * @Param: [value 需要解析的值, fileinfo 整个文件的配置]
@@ -339,7 +425,7 @@ public class FileTest {
         if(fileName == null) return null;
         // 获取确认文件必填字段信息
         Map<String,String> confirmInfo = confirmFileConf.get (fileName).get (0);
-        // 获取确认文件必填字段信息
+        // 获取确认文件必填字段信息 ，获取的值有问题
         String itmflag = confirmInfo.get ("itmflag");
         // 分割确认文件必填字段信息
         String[] confieFiled = itmflag.split ("\\|");
@@ -388,7 +474,8 @@ public class FileTest {
         StringBuffer ret = new StringBuffer ();
         List<String> fileddeatil ;
         String key = null;
-        for (int i = 0; i < confieFiled.length; i++){
+        int len = fileconfig.size ();
+        for (int i = 0; i < len; i++){
             fileddeatil = fileconfig.get (i);
             key = fileddeatil.get (4);
 
@@ -505,6 +592,13 @@ public class FileTest {
                        "03",
                        TANO);
                 logger.info(ret);
+
+               try {
+                   NewFile (TANO,date,distributor,interfaceType,ret.split ("\r"),filenum);
+               } catch (IOException e) {
+                   e.printStackTrace ();
+               }
+
            }
 
         }
@@ -512,6 +606,18 @@ public class FileTest {
 
 
     }
+
+    @Test
+    public void testinit(){
+        logger.info (taFileConfigMap);
+        logger.info (sequenceFiled);
+        try {
+            NewAirFileForConfirm("4T","20200514","387","21");
+        } catch (IOException e) {
+            e.printStackTrace ();
+        }
+    }
+
     @Test
     public  void testFileIni(){
 //        String filename = "D:/OFD_888.ini";
@@ -650,7 +756,7 @@ public class FileTest {
     }
 
     @Test
-    public void parsaXML(){
+    public static void parsaXML(){
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance ();
 
         List<Map<String,String>> attrConf;Map<String,String> attrItem;
