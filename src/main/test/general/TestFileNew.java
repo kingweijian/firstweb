@@ -51,22 +51,24 @@ public class TestFileNew {
         String[] fileFiledNum = FileTest.getSale_to_taFileList (
                 TANO,date,distributor,interfaceType,4
         );
-
+        // 文件一行有多长
         String[] fileLinelen = FileTest.getSale_to_taFileList (
                 TANO,date,distributor,interfaceType,3
         );
 
         // 获取文件简称
         String[] fileAbbreviation = FileTest.getTaFileName (filename);
-        logger.info (Arrays.toString (fileAbbreviation));
+//        logger.info (Arrays.toString (fileAbbreviation));
         String filenum = "",ret;
         for (int i = 0; i < fileAbbreviation.length; i++){
 
             File file = new File(baseDir + "/" + filename[i]);
+            logger.info(file.getPath());
             if(file.exists ()){
                 logger.info (file.getPath ());
                 filenum = fileAbbreviation[i];
-                // 解析文件，根据申请文件中的数据生成确认数据
+                logger.info("文件别名: " + filenum + " ,文件有多少个字段 : "+fileFiledNum[i] + " , 文件一行有多长 ： " + fileLinelen[i]);
+                // 解析文件，根据申请文件中的数据生成确认数据  ↑ 有问题
                 ret = FileTest.generateConfirmedFileContext(
                         FileTest.readFile (file,Integer.valueOf (fileStart[i])).split ("\r\n"),
                         FileTest.sequenceFiled.get(filenum),
@@ -74,7 +76,7 @@ public class TestFileNew {
                         fileLinelen[i],
                         "03",
                         TANO);
-                logger.info(ret);
+                logger.info(filenum + " ---- >>>>" + ret);
 
                 try {
                     // 根据生成的确认数据，生成确认文件

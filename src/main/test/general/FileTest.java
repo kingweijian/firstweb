@@ -65,6 +65,14 @@ public class FileTest {
      static Map<String, List<Map<String,String>>> confirmFileConf = new HashMap<String, List<Map<String,String>>> ();
      static Class<?>  pubResClass = null;
     @Before
+     public void initTest(){
+        try {
+            init();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void init() throws ClassNotFoundException {
         logger.info ("BASEURL -- " + BASURL);
         Ini ini = null;
@@ -166,8 +174,6 @@ public class FileTest {
             confirmFile = ta_to_sale_fileName_21;
         else
             confirmFile = ta_to_sale_fileName_20;
-
-
 
         FileWriter fileWriter = null;
         String tempFile = null;
@@ -377,6 +383,8 @@ public class FileTest {
     /**
     * @Description:   分解每个文件的一行数据，然后存入Map中，方便之后的操作，map 同一key为String，String ，    ---- 可以考虑返回list，因为有必填字段信息，只要遍历必填信息，然后从中取值
     * @Param: [value 需要解析的值, fileinfo 整个文件的配置]
+     * @Param fileFiledNum 文件有多少个字段
+     * @Param filelinelen 文件一行的长度
     * @return: java.lang.Map
     * @Author: weijian
     * @Date: 2020/4/18
@@ -384,14 +392,15 @@ public class FileTest {
      *            C,		 60,		0	,	 通讯地址,	     Address
     */
     public static Map<String,String> parsingLine(String value,List<List> fileinfo,String fileFiledNum,String filelinelen){
+        logger.info(fileinfo);
         Map<String,String> reaulst = new HashMap<String, String> ();
         int start = 0,end; List<String> cofdetail;
         value = BackUpStr (value,Integer.valueOf(filelinelen));
         logger.info(value.length());
-        int size = Integer.valueOf (fileFiledNum);
+        int size = fileinfo.size();
         for (int i = 0 ; i < size ; i++){
             cofdetail = fileinfo.get (i);
-            logger.info(Arrays.toString(cofdetail.toArray())  + " --- " +cofdetail.get (1) + "  ----  " +  i + " start --- " +start);
+//            logger.info(Arrays.toString(cofdetail.toArray())  + " --- " +cofdetail.get (1) + "  ----  " +  i + " start --- " +start);
             // 分割数据
             end = Integer.valueOf( cofdetail.get (1));
 //            logger.info(value.substring(start, start+end));
@@ -412,19 +421,21 @@ public class FileTest {
      * @param filelinelen    文件一条内容的长度 ,需要解析的文件配置 （需要解析的长度，字段大小... 等等待补充信息，后期读取配置）
      * @return
      */
-    public static String generateConfirmedFileContext(String[] fileConent,List<List> fileinfo,String fileFiledNum,String filelinelen,String fileName,String TANO){
+    public static String generateConfirmedFileContext(String[] fileConent,List<List> fileinfo,String fileFiledNum,String filelinelen,String fileNum,String TANO){
 
-        logger.info(fileConent.length-1);
+        logger.info(fileinfo);
         Map<String,String> filedinfo ;
         // TA编码
 
         // 获得需要解析的文件名字
 
         // 根据解析文件名字获取确认文件名字
-        fileName = getCofirmedFileName (fileName);
+        String fileName = getCofirmedFileName (fileNum);
+        logger.info("generateConfirmedFileContext fileName : " +  fileName);
         if(fileName == null) return null;
         // 获取确认文件必填字段信息
         Map<String,String> confirmInfo = confirmFileConf.get (fileName).get (0);
+        logger.info(confirmInfo);
         // 获取确认文件必填字段信息 ，获取的值有问题
         String itmflag = confirmInfo.get ("itmflag");
         // 分割确认文件必填字段信息
@@ -444,6 +455,7 @@ public class FileTest {
                 true,false,
                 fileName,"0");
         StringBuffer stringBuffer = new StringBuffer ();
+
         for (int i = 0; i < fileConent.length-1; i++){
             logger.info(fileConent[i]);
             filedinfo = parsingLine (fileConent[i],fileinfo,fileFiledNum,filelinelen);
@@ -518,7 +530,7 @@ public class FileTest {
     }
 
     public static String getCofirmedFileName(String fileName){
-
+        logger.info(fileName);
         if(fileName.equals ("01")){  // 开户
             return "02";
         }else if(fileName.equals ("03")){ // 确认
@@ -612,7 +624,7 @@ public class FileTest {
         logger.info (taFileConfigMap);
         logger.info (sequenceFiled);
         try {
-            NewAirFileForConfirm("4T","20200514","387","21");
+            NewAirFileForConfirm("5L","20200518","387","21");
         } catch (IOException e) {
             e.printStackTrace ();
         }
@@ -755,7 +767,7 @@ public class FileTest {
         logger.info (num + (Long) processField(s,n));
     }
 
-    @Test
+
     public static void parsaXML(){
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance ();
 

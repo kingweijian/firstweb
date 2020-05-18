@@ -370,13 +370,13 @@
 38=C,1,0,分红类型,DividendType
 39=C,24,0,原申请单编号,OriginalAppSheetNo
 40=N,16,2,业绩报酬,AchievementPay
-41=N,16,2,业绩补偿,AchievementCompen
+41=N,16,2,业绩补偿,AchievementCompen,基金单位净值,NAV
 [07]
 1=C,40,0,基金名称,FundName
 2=N,16,2,基金总份数,TotalFundVol
 3=C,6,0,基金代码,FundCode
 4=C,1,0,基金状态,FundStatus
-5=N,7,4,基金单位净值,NAV
+5=N,7,4
 6=A,8,0,基金信息更改日期,UpdateDate
 7=C,1,0,净值类型,NetValueType
 8=N,7,4,累计基金单位净值,AccumulativeNAV

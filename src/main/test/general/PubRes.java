@@ -23,9 +23,11 @@ public class PubRes {
     // 是否是TA发起业务标识
     private boolean isTAFlag = false;
     // 文件代码
-    private String fileCode = "";
+    private String fileCode = "0000";
     // 转入/转出标识
-        private String  transferDirection = "";
+    private String  transferDirection = "";
+    // 净值字段，在收到申请文件时根据13文件中的购买情况来确定净值的增加或减少
+    private String nav = "0010000";
 
     public PubRes() {
     }
@@ -104,5 +106,14 @@ public class PubRes {
 
     public void setToBeresolvedInfo(Map<String, String> toBeresolvedInfo) {
         this.toBeresolvedInfo = toBeresolvedInfo;
+    }
+
+
+    public String getNav() {
+        return nav;
+    }
+
+    public void setNav(String nav) {
+        this.nav = nav;
     }
 }
